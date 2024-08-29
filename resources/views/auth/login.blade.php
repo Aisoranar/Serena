@@ -1,23 +1,35 @@
-@extends('layaouts.auth-master')
+{{-- resources/views/auth/login.blade.php --}}
+@extends('layouts.app')
+
+@section('title', 'Iniciar Sesión')
 
 @section('content')
-<form action="/login" method="POST">
-    @csrf
-    <h1>Login</h1>
-    @include('layaouts.partials.message')
+<div class="container">
+    <h1>Iniciar Sesión</h1>
 
-        <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">Username / Email address</label>
-            <input type="text" name="username" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
         </div>
-        <div class="mb-3">
-            <label for="exampleInputPassword1" class="form-label">Password</label>
-            <input type="password" name="password" class="form-control" id="exampleInputPassword1">
+    @endif
+
+    <form action="{{ route('login') }}" method="POST">
+        @csrf
+        <div class="form-group">
+            <label for="email">Correo Electrónico</label>
+            <input type="email" name="email" class="form-control" required>
         </div>
-        <div class="mb-3">
-            <a href="/register">Crear Cuenta</a>
+        <div class="form-group">
+            <label for="password">Contraseña</label>
+            <input type="password" name="password" class="form-control" required>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary mt-3">Ingresar</button>
     </form>
+
+    <a href="{{ route('register.show') }}">¿No tienes una cuenta? Regístrate aquí</a>
+</div>
 @endsection

@@ -4,31 +4,27 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
-
+// Página de inicio
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/register', [RegisterController::class, 'show']);
+// Rutas de registro
+Route::get('/register', [RegisterController::class, 'show'])->name('register.show');
+Route::post('/register', [RegisterController::class, 'register'])->name('register');
 
-Route::post('/register', [RegisterController::class, 'register']);
+// Rutas de inicio de sesión
+Route::get('/login', [LoginController::class, 'show'])->name('login.show');
+Route::post('/login', [LoginController::class, 'login'])->name('login');
 
+// Ruta para cerrar sesión
+Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
 
-Route::get('/login', [LoginController::class, 'show']);
-Route::post('/login', [LoginController::class, 'login']);
-
-Route::get('/home', [HomeController::class, 'index']);
-
-Route::get('/logout', [LogoutController::class, 'logout']);
+// Ruta principal protegida por autenticación
+Route::middleware(['auth'])->group(function () {
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
+    Route::resource('students', StudentController::class);
+});
