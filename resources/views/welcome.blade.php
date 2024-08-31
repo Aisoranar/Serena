@@ -14,9 +14,32 @@
         <p class="text-xl mb-8 max-w-2xl mx-auto leading-relaxed animate-slide-in">
             Una plataforma inteligente para la gestión de estudiantes de UNIPAZ, con el objetivo de optimizar el seguimiento y la inclusión educativa.
         </p>
-        <a href="{{ route('login.show') }}" class="bg-white text-blue-900 font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-blue-50 transition-all duration-300 transform hover:scale-105 animate-bounce">
-            Iniciar Sesión
-        </a>
+
+        @auth
+            <!-- Redirigir según el rol del usuario -->
+            @if(auth()->user()->role === 'student')
+                <a href="{{ route('students.index') }}" class="bg-white text-blue-900 font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-blue-50 transition-all duration-300 transform hover:scale-105">
+                    Ir a Estudiantes
+                </a>
+            @elseif(auth()->user()->role === 'health_professional')
+                <a href="{{ route('home') }}" class="bg-white text-blue-900 font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-blue-50 transition-all duration-300 transform hover:scale-105">
+                    Ir a Profesionales de la Salud
+                </a>
+            @elseif(auth()->user()->role === 'docent')
+                <a href="{{ route('teachers.index') }}" class="bg-white text-blue-900 font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-blue-50 transition-all duration-300 transform hover:scale-105">
+                    Ir a Docentes
+                </a>
+            @else
+                <a href="{{ route('home') }}" class="bg-white text-blue-900 font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-blue-50 transition-all duration-300 transform hover:scale-105">
+                    Ir al Panel de Administración
+                </a>
+            @endif
+        @else
+            <!-- Botón de Iniciar Sesión para invitados -->
+            <a href="{{ route('login.show') }}" class="bg-white text-blue-900 font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-blue-50 transition-all duration-300 transform hover:scale-105 animate-bounce">
+                Iniciar Sesión
+            </a>
+        @endauth
     </section>
 
     <!-- Information Section -->

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Student;
+use App\Models\Teacher;
 use App\Models\Document;
 use App\Models\Cita;
 use Illuminate\Http\Request;
@@ -12,9 +13,18 @@ class StudentController extends Controller
 {
     public function index()
     {
-        $students = Auth::user()->role === 'health_professional' 
-            ? Student::paginate(10) 
-            : Student::where('user_id', Auth::id())->paginate(10);
+        // Verificamos el rol del usuario
+        if (Auth::user()->role === 'health_professional') {
+            // Si es un profesional de la salud, mostramos todos los estudiantes
+            $students = Student::paginate(10);
+        } elseif (Auth::user()->role === 'docent') {
+            // Si es un docente, mostramos a los estudiantes de su escuela o departamento
+            $teacher = Auth::user()->teacher;
+            $students = Student::where('academic_program', 'like', "%{$teacher->department}%")->paginate(10);
+        } else {
+            // Si es un estudiante, mostramos solo su información
+            $students = Student::where('user_id', Auth::id())->paginate(10);
+        }
 
         return view('students.index', compact('students'));
     }
