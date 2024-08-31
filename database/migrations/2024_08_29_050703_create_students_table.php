@@ -11,12 +11,12 @@ class CreateStudentsTable extends Migration
         Schema::create('students', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('department_id')->constrained('departments_and_cities')->onDelete('cascade');
+            $table->foreignId('city_id')->constrained('departments_and_cities')->onDelete('cascade');
             $table->string('first_name');
             $table->string('last_name');
             $table->enum('document_type', ['CC', 'TI', 'CE']);
             $table->string('document_number')->unique();
-            $table->string('department');
-            $table->string('city');
             $table->enum('zone', ['Rural', 'Urbana']);
             $table->date('birth_date');
             $table->integer('age');

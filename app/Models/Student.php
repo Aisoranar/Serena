@@ -47,4 +47,14 @@ class Student extends Model
     {
         return $this->hasMany(Cita::class);
     }
+
+    public function department()
+    {
+        return $this->belongsTo(DepartmentAndCity::class, 'department_id');
+    }
+
+    public function city()
+    {
+        return $this->belongsTo(DepartmentAndCity::class, 'city_id');
+    }
 }
