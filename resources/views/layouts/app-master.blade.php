@@ -6,47 +6,50 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'SERENA')</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Animaciones personalizadas */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 1.5s ease-in-out;
+        }
+    </style>
 </head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="{{ url('/') }}">SERENA</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('home') }}">Inicio</a>
-                </li>
+<body class="bg-gray-100 text-gray-900">
+
+    <!-- Navbar -->
+    <nav class="bg-white shadow-md fixed w-full z-50">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="{{ url('/') }}" class="text-3xl font-bold text-black">
+                <i class="fas fa-graduation-cap text-black"></i> SERENA
+            </a>
+            <div class="hidden md:flex space-x-6">
+                <a href="{{ route('home') }}" class="text-black hover:text-blue-600 transition-all duration-300">Inicio</a>
                 @auth
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('students.index') }}">Estudiantes</a>
-                    </li>
-                    <li class="nav-item">
-                        <form action="{{ route('logout') }}" method="POST" style="display:inline;">
-                            @csrf
-                            <button type="submit" class="btn btn-link nav-link" style="display:inline;">Cerrar sesión</button>
-                        </form>
-                    </li>
+                    <a href="{{ route('students.index') }}" class="text-black hover:text-blue-600 transition-all duration-300">Estudiantes</a>
+                    <form action="{{ route('logout') }}" method="POST" class="inline">
+                        @csrf
+                        <button type="submit" class="text-black hover:text-blue-600 transition-all duration-300">Cerrar sesión</button>
+                    </form>
                 @else
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('login.show') }}">Ingresar</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('register.show') }}">Registrarse</a>
-                    </li>
+                    <a href="{{ route('login.show') }}" class="text-black hover:text-blue-600 transition-all duration-300">Ingresar</a>
+                    <a href="{{ route('register.show') }}" class="text-black hover:text-blue-600 transition-all duration-300">Registrarse</a>
                 @endauth
-            </ul>
+            </div>
         </div>
     </nav>
 
-    <div class="container mt-4">
+    <!-- Main Content -->
+    <div class="pt-20">
         @yield('content')
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.9.1/cdn.min.js"></script>
 </body>
 </html>

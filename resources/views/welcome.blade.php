@@ -4,45 +4,48 @@
 @section('title', 'Bienvenido a SERENA')
 
 @section('content')
-<div class="container">
-    <h1>Bienvenido a SERENA</h1>
-    <p>Esta es la plataforma de información de estudiantes de UNIPAZ. Aquí puedes encontrar datos personales, seguimiento y hoja de ruta de cada estudiante.</p>
+<div class="bg-gradient-to-b from-blue-900 to-green-500 min-h-screen flex flex-col items-center justify-center text-white">
+    
+    <!-- Hero Section -->
+    <section class="text-center">
+        <h1 class="text-5xl font-extrabold mb-6 animate-fade-in">
+            Bienvenido a <span class="text-white">SERENA</span>
+        </h1>
+        <p class="text-xl mb-8 max-w-2xl mx-auto leading-relaxed animate-slide-in">
+            Una plataforma inteligente para la gestión de estudiantes de UNIPAZ, con el objetivo de optimizar el seguimiento y la inclusión educativa.
+        </p>
+        <a href="{{ route('login.show') }}" class="bg-white text-blue-900 font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-blue-50 transition-all duration-300 transform hover:scale-105 animate-bounce">
+            Iniciar Sesión
+        </a>
+    </section>
 
-    <ul class="nav nav-tabs">
-        <li class="nav-item">
-            <a class="nav-link active" href="#inicio" data-toggle="tab">Inicio</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#docentes" data-toggle="tab">Docentes</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#estudiantes" data-toggle="tab">Estudiantes</a>
-        </li>
-    </ul>
+    <!-- Information Section -->
+    <section class="container mx-auto mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 px-4 animate-slide-up">
+        <!-- Inicio Card -->
+        <div class="bg-white bg-opacity-90 rounded-lg shadow-lg p-6 text-gray-900 hover:bg-opacity-100 transition-all duration-300 transform hover:scale-105">
+            <h2 class="text-2xl font-semibold mb-4">Inicio</h2>
+            <p class="text-lg">Descubre la funcionalidad de SERENA, una plataforma diseñada para facilitar el acceso y gestión de información estudiantil.</p>
+            <a href="#inicio" class="text-blue-600 hover:underline mt-4 block">Ver más</a>
+        </div>
 
-    <div class="tab-content mt-3">
-        <div class="tab-pane fade show active" id="inicio">
-            <p>Información sobre el aplicativo SERENA y su funcionalidad.</p>
-            <p>Este sistema permite a los profesionales de la salud y estudiantes gestionar y visualizar información importante, asegurando una mejor inclusión y seguimiento.</p>
+        <!-- Docentes Card -->
+        <div class="bg-white bg-opacity-90 rounded-lg shadow-lg p-6 text-gray-900 hover:bg-opacity-100 transition-all duration-300 transform hover:scale-105">
+            <h2 class="text-2xl font-semibold mb-4">Docentes</h2>
+            <p class="text-lg">Accede a recursos y guías diseñados para docentes, que ayudan en la caracterización y acompañamiento de los estudiantes.</p>
+            <a href="#docentes" class="text-blue-600 hover:underline mt-4 block">Ver más</a>
         </div>
-        <div class="tab-pane fade" id="docentes">
-            <p>En esta sección los docentes encontrarán guías y recursos sobre rutas de caracterización, así como herramientas educativas para mejorar la experiencia de aprendizaje.</p>
-            <ul>
-                <li>Guías para caracterización de estudiantes.</li>
-                <li>Recursos para facilitar la inclusión en círculos de aprendizaje.</li>
-                <li>Acceso a herramientas y técnicas de apoyo educativo.</li>
-            </ul>
-        </div>
-        <div class="tab-pane fade" id="estudiantes">
-            <p>Aquí se presentan estrategias, consejos y tips diseñados para fomentar la inclusión de los estudiantes en los círculos de aprendizaje.</p>
-            <ul>
-                <li>Consejos para mejorar la interacción social y académica.</li>
-                <li>Estrategias de aprendizaje inclusivo.</li>
-                <li>Acceso a recursos y apoyo especializado.</li>
-            </ul>
-        </div>
-    </div>
 
-    <a href="{{ route('login.show') }}" class="btn btn-primary mt-3">Ingresar</a>
+        <!-- Estudiantes Card -->
+        <div class="bg-white bg-opacity-90 rounded-lg shadow-lg p-6 text-gray-900 hover:bg-opacity-100 transition-all duration-300 transform hover:scale-105">
+            <h2 class="text-2xl font-semibold mb-4">Estudiantes</h2>
+            <p class="text-lg">Conoce las estrategias y consejos para fomentar la inclusión y participación activa en el entorno educativo.</p>
+            <a href="#estudiantes" class="text-blue-600 hover:underline mt-4 block">Ver más</a>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="mt-24 text-center text-sm text-gray-200">
+        &copy; 2024 SERENA. Todos los derechos reservados.
+    </footer>
 </div>
 @endsection
