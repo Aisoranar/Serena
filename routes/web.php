@@ -27,4 +27,8 @@ Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
 Route::middleware(['auth'])->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::resource('students', StudentController::class);
+    Route::post('students/{student}/upload-documents', [StudentController::class, 'uploadDocuments'])->name('students.upload_documents');
+    Route::get('students/{student}/view-document/{id}', [StudentController::class, 'viewDocument'])->name('students.view_document');
+    Route::get('students/{student}/citas', [StudentController::class, 'citas'])->name('students.citas');
+    Route::post('students/{student}/add-cita', [StudentController::class, 'addCita'])->name('students.add_cita');
 });

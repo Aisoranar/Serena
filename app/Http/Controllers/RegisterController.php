@@ -20,25 +20,25 @@ class RegisterController extends Controller
 
     // Maneja la lógica de registro
     public function register(Request $request)
-{
-    // Validaciones de los campos del formulario
-    $request->validate([
-        'name' => 'required|string|max:255',
-        'email' => 'required|string|email|max:255|unique:users',
-        'password' => 'required|string|min:6|confirmed',
-        'username' => 'required|string|max:255|unique:users', // Añade validación para username
-    ]);
+    {
+        // Validaciones de los campos del formulario
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'username' => 'required|string|max:255|unique:users',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:6|confirmed',
+        ]);
 
-    // Crea el usuario con los datos validados
-    User::create([
-        'name' => $request->name,
-        'email' => $request->email,
-        'username' => $request->username, // Añade el username aquí
-        'password' => Hash::make($request->password),
-        'role' => 'student', // Asigna un rol predeterminado
-    ]);
+        // Crea el usuario con los datos validados y encripta la contraseña
+        $user = User::create([
+            'name' => $request->name,
+            'username' => $request->username,
+            'email' => $request->email,
+            'password' => Hash::make($request->password), // Importante: Encripta la contraseña con Bcrypt
+            'role' => 'student', // Asigna un rol predeterminado
+        ]);
 
-    // Redirige a la página de login con un mensaje de éxito
-    return redirect()->route('login.show')->with('success', 'Cuenta creada exitosamente');
-}
+        Auth::login($user); // Loguear automáticamente después del registro
+        return redirect()->route('home')->with('success', 'Cuenta creada exitosamente');
+    }
 }

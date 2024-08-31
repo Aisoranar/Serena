@@ -1,7 +1,5 @@
 <?php
 
-// app/Models/User.php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -15,6 +13,7 @@ class User extends Authenticatable
 
     protected $fillable = [
         'name',
+        'username',
         'email',
         'password',
         'role',
@@ -29,6 +28,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+   
     public function student()
     {
         return $this->hasOne(Student::class);

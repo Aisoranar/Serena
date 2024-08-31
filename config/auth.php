@@ -94,8 +94,8 @@ return [
         'users' => [
             'provider' => 'users',
             'table' => 'password_reset_tokens',
-            'expire' => 60,
-            'throttle' => 60,
+            'expire' => 60,  // El tiempo en minutos durante el cual es válido un token de restablecimiento
+            'throttle' => 60, // Tiempo en segundos para evitar demasiadas solicitudes
         ],
     ],
 
@@ -110,6 +110,6 @@ return [
     |
     */
 
-    'password_timeout' => 10800,
+    'password_timeout' => 10800, // Timeout de 3 horas
 
 ];
