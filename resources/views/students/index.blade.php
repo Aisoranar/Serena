@@ -1,4 +1,3 @@
-{{-- resources/views/students/index.blade.php --}}
 @extends('layouts.app')
 
 @section('content')
@@ -34,5 +33,7 @@
             @endforeach
         </tbody>
     </table>
+
+    {{ $students->links() }}
 </div>
 @endsection

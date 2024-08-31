@@ -1,4 +1,4 @@
-{{-- resources/views/students/citas.blade.php --}}
+@extends('layouts.app')
 
 @section('title', 'Citas de Bienestar')
 

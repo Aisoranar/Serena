@@ -1,4 +1,3 @@
-{{-- resources/views/students/upload_documents.blade.php --}}
 @extends('layouts.app')
 
 @section('title', 'Subir Documentos')

@@ -11,7 +11,21 @@
 
     @auth
         <div class="bg-white p-6 rounded-lg shadow-lg">
-            <p class="text-lg text-gray-700">Bienvenido <span class="font-semibold">{{ auth()->user()->name ?? auth()->user()->username }}</span>, estás autenticado en la página.</p>
+            <p class="text-lg text-gray-700">
+                Bienvenido <span class="font-semibold">{{ auth()->user()->name ?? auth()->user()->username }}</span>. 
+                Usted se encuentra registrado como 
+                <span class="font-semibold">
+                    @if(auth()->user()->role === 'student')
+                        Estudiante
+                    @elseif(auth()->user()->role === 'health_professional')
+                        Profesional de la salud
+                    @elseif(auth()->user()->role === 'docent')
+                        Docente
+                    @else
+                        {{ ucfirst(auth()->user()->role) }} <!-- Fallback for other roles -->
+                    @endif
+                </span>.
+            </p>
             <form action="{{ route('logout') }}" method="POST" class="mt-4 inline-block">
                 @csrf
                 <button type="submit" class="bg-red-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-red-700 transition duration-300">Cerrar sesión</button>

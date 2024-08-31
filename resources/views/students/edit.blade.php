@@ -1,4 +1,3 @@
-{{-- resources/views/students/edit.blade.php --}}
 @extends('layouts.app')
 
 @section('content')
@@ -21,15 +20,25 @@
             <select name="document_type" class="form-control" required>
                 <option value="CC" {{ $student->document_type == 'CC' ? 'selected' : '' }}>Cédula de Ciudadanía</option>
                 <option value="TI" {{ $student->document_type == 'TI' ? 'selected' : '' }}>Tarjeta de Identidad</option>
-                <option value="CE" {{ $student->document_type == 'CE' ? 'selected' : '' }}>Cédula de Extranjería</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="document_number">Número de Documento</label>
-            <input type="text" name="document_number" class="form-control" value="{{ $student->document_number }}" required>
-        </div>
-        <!-- Continúa con los demás campos... -->
-        <button type="submit" class="btn btn-success mt-3">Actualizar</button>
-    </form>
-</div>
-@endsection
+                <option value="CE" {{ $student->document_type == 'CE' ? 'selected' : '' }}>Cédula de Extranjería
+                    <option value="CE" {{ $student->document_type == 'CE' ? 'selected' : '' }}>Cédula de Extranjería</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="document_number">Número de Documento</label>
+                <input type="text" name="document_number" class="form-control" value="{{ $student->document_number }}" required>
+            </div>
+            <div class="form-group">
+                <label for="department">Departamento</label>
+                <input type="text" name="department" class="form-control" value="{{ $student->department }}" required>
+            </div>
+            <div class="form-group">
+                <label for="city">Ciudad</label>
+                <input type="text" name="city" class="form-control" value="{{ $student->city }}" required>
+            </div>
+            <!-- Add other fields here as needed -->
+            <button type="submit" class="btn btn-success mt-3">Actualizar</button>
+        </form>
+    </div>
+    @endsection
+    

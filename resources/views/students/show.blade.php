@@ -1,4 +1,3 @@
-{{-- resources/views/students/show.blade.php --}}
 @extends('layouts.app')
 
 @section('content')
@@ -12,7 +11,7 @@
         <li class="list-group-item"><strong>Ciudad:</strong> {{ $student->city }}</li>
         <li class="list-group-item"><strong>Dirección:</strong> {{ $student->address }}</li>
         <li class="list-group-item"><strong>Teléfono:</strong> {{ $student->phone }}</li>
-        <!-- Continúa con los demás campos... -->
+        <!-- Add other fields here as needed -->
     </ul>
 
     <a href="{{ route('students.index') }}" class="btn btn-primary mt-3">Volver</a>

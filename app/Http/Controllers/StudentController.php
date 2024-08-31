@@ -11,15 +11,13 @@ use Illuminate\Support\Facades\Auth;
 class StudentController extends Controller
 {
     public function index()
-{
-    if (Auth::user()->role === 'health_professional') {
-        $students = Student::paginate(10); // Cambia 10 por el número de estudiantes por página que desees
-    } else {
-        $students = Student::where('user_id', Auth::id())->paginate(10); // Cambia 10 por el número de estudiantes por página que desees
-    }
-    return view('students.index', compact('students'));
-}
+    {
+        $students = Auth::user()->role === 'health_professional' 
+            ? Student::paginate(10) 
+            : Student::where('user_id', Auth::id())->paginate(10);
 
+        return view('students.index', compact('students'));
+    }
 
     public function create()
     {
