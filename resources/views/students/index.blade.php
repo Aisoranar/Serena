@@ -1,39 +1,38 @@
 @extends('layouts.app')
 
+@section('title', 'Perfil del Estudiante')
+
 @section('content')
 <div class="container">
-    <h1>Listado de Estudiantes</h1>
-    <a href="{{ route('students.create') }}" class="btn btn-primary mb-3">Agregar Estudiante</a>
+    <h1>Perfil del Estudiante</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Nombre</th>
-                <th>Documento</th>
-                <th>Ciudad</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($students as $student)
-                <tr>
-                    <td>{{ $student->first_name }} {{ $student->last_name }}</td>
-                    <td>{{ $student->document_type }}: {{ $student->document_number }}</td>
-                    <td>{{ $student->city }}</td>
-                    <td>
-                        <a href="{{ route('students.show', $student->id) }}" class="btn btn-info btn-sm">Ver</a>
-                        <a href="{{ route('students.edit', $student->id) }}" class="btn btn-warning btn-sm">Editar</a>
-                        <form action="{{ route('students.destroy', $student->id) }}" method="POST" style="display:inline-block;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro?')">Eliminar</button>
-                        </form>
-                    </td>
-                </tr>
+    @if($student)
+        <ul class="list-group mb-3">
+            <li class="list-group-item"><strong>Nombre:</strong> {{ $student->first_name }} {{ $student->last_name }}</li>
+            <li class="list-group-item"><strong>Documento:</strong> {{ $student->document_type }} {{ $student->document_number }}</li>
+            <li class="list-group-item"><strong>Ciudad:</strong> {{ $student->city }}</li>
+        </ul>
+
+        <h2>Subir Documentos</h2>
+        <form action="{{ route('students.upload_documents') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <div class="form-group">
+                <label for="document">Documento (PDF)</label>
+                <input type="file" name="document" class="form-control" accept=".pdf" required>
+            </div>
+            <button type="submit" class="btn btn-success mt-3">Subir</button>
+        </form>
+
+        <h3 class="mt-5">Documentos Subidos</h3>
+        <ul class="list-group">
+            @foreach ($student->documents as $document)
+                <li class="list-group-item">
+                    <a href="{{ route('students.view_document', $document->id) }}">{{ $document->filename }}</a>
+                </li>
             @endforeach
-        </tbody>
-    </table>
-
-    {{ $students->links() }}
+        </ul>
+    @else
+        <p>No se ha encontrado el perfil del estudiante.</p>
+    @endif
 </div>
 @endsection

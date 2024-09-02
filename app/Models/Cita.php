@@ -9,7 +9,9 @@ class Cita extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['nombre', 'fecha', 'observacion'];
+    protected $table = 'citas'; // Asegúrate de que el nombre de la tabla es correcto
+
+    protected $fillable = ['nombre', 'fecha', 'observacion', 'student_id'];
 
     public function student()
     {

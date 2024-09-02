@@ -9,14 +9,16 @@ class Student extends Model
 {
     use HasFactory;
 
+    protected $table = 'students'; // Nombre de la tabla explícito
+
     protected $fillable = [
         'user_id',
         'first_name',
         'last_name',
         'document_type',
         'document_number',
-        'department',
-        'city',
+        'department_id', // Cambiado a ID en lugar de nombre
+        'city_id',       // Cambiado a ID en lugar de nombre
         'zone',
         'birth_date',
         'age',

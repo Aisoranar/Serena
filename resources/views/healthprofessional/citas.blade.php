@@ -1,3 +1,4 @@
+{{-- resources/views/healthprofessional/citas.blade.php --}}
 @extends('layouts.app')
 
 @section('title', 'Citas de Bienestar')
@@ -12,7 +13,7 @@
         </div>
     @endif
 
-    <form action="{{ route('students.add_cita', $student->id) }}" method="POST">
+    <form action="{{ route('healthprofessional.add_cita', $student->id) }}" method="POST">
         @csrf
         <div class="form-group">
             <label for="nombre">Nombre de la Cita</label>

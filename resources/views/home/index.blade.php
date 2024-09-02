@@ -26,10 +26,6 @@
                     @endif
                 </span>.
             </p>
-            <form action="{{ route('logout') }}" method="POST" class="mt-4 inline-block">
-                @csrf
-                <button type="submit" class="bg-red-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-red-700 transition duration-300">Cerrar sesión</button>
-            </form>
         </div>
     @endauth
 

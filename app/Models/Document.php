@@ -9,7 +9,9 @@ class Document extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['filename', 'path'];
+    protected $table = 'documents'; // Nombre de la tabla explícito
+
+    protected $fillable = ['filename', 'path', 'student_id'];
 
     public function student()
     {

@@ -11,6 +11,8 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    protected $table = 'users'; // Nombre de la tabla explícito
+
     protected $fillable = [
         'name',
         'username',
@@ -28,15 +30,18 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    // Relación con estudiantes
     public function student()
     {
         return $this->hasOne(Student::class);
     }
 
-    // Relación con docentes
     public function teacher()
     {
         return $this->hasOne(Teacher::class);
+    }
+
+    public function healthProfessional()
+    {
+        return $this->hasOne(HealthProfessional::class);
     }
 }
