@@ -17,8 +17,8 @@ class ProfileDocentController extends Controller
     public function show($id)
     {
         // Verifica si el docente existe en la base de datos
-        $docente = ProfileDocent::with('user', 'department', 'city')->find($id);
-
+        $docente = ProfileDocent::with('user', 'department', 'city')->where('user_id', $id)->first();
+        
         if (!$docente) {
             // Si no encuentra el docente, devuelve un 404
             abort(404, 'Docente no encontrado.');

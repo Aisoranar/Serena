@@ -88,5 +88,7 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/docente/perfil/{id}', [ProfileDocentController::class, 'show'])
     ->name('docente.perfil.show');
+    Route::put('/docente/perfil-edit/{id}', [ProfileDocentController::class, 'edit'])
+    ->name('docente.perfil.edit');
 
 });

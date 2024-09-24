@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ProfileDocent;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -51,6 +52,13 @@ class UserController extends Controller
     $user->password = bcrypt($request->password); // Aquí encriptas la contraseña
     $user->role = $request->role;
     $user->save();
+
+    //New Docente
+    if($request->role == 'docent'){
+        $docent = new ProfileDocent();
+        $docent->user_id = $user->id;
+        $docent->save();
+    }
 
     return redirect()->route('users.index')->with('success', 'Usuario creado correctamente');
 }

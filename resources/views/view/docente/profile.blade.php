@@ -9,7 +9,7 @@
         <div class="card">
             <div class="card-body">
                 <h3 class="mb-3">Datos Personales</h3>
-
+  
                 <!-- Nombres y apellidos del docente (desde la tabla 'users') -->
                 <p><strong>Primer Nombre:</strong> {{ $docente->user->first_name ?? 'N/A' }}</p>
                 <p><strong>Segundo Nombre:</strong> {{ $docente->user->second_name ?? 'N/A' }}</p>
@@ -20,7 +20,15 @@
 
                 <!-- Datos del perfil docente -->
                 <p><strong>Escuela a la que pertenece:</strong> {{ $docente->school }}</p>
-                <p><strong>Departamento:</strong> {{ $docente->department?->department ?? 'N/A' }}</p>
+                @if ($docente->department?->department)
+                    <p><strong>Departamento:</strong> {{ $docente->department?->department }}</p>
+                @else
+                 <select name="" id="">
+                    <option value="">Hola1</option>
+                    <option value="">Hola2</option>
+                    <option value="">Hola3</option>
+                 </select>
+                @endif
                 <p><strong>Ciudad:</strong> {{ $docente->city?->city ?? 'N/A' }}</p>
 
                 <!-- Botón para editar el perfil del docente -->
