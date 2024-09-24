@@ -10,8 +10,8 @@ return new class extends Migration {
         Schema::create('profile_docents', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('department_id')->constrained('departments_and_cities')->onDelete('cascade');
-            $table->foreignId('city_id')->constrained('departments_and_cities')->onDelete('cascade');
+            $table->foreignId('department_id')->nullable()->constrained('departments_and_cities')->onDelete('cascade');
+            $table->foreignId('city_id')->nullable()->constrained('departments_and_cities')->onDelete('cascade');
 
             $table->enum('school', [
                 'Escuela de Ciencias',
@@ -21,7 +21,8 @@ return new class extends Migration {
                 'Escuela Ingeniería Ambiental y de Saneamiento',
                 'Escuela Ingeniería de Producción',
                 'Escuela de Medicina Veterinaria y Zootecnia'
-            ]);
+            ])->nullable();
+
             
             $table->timestamps();
         });

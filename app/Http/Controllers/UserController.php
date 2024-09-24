@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\ProfileDocent;
+use App\Models\ProfileStudent;
+
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -58,6 +60,13 @@ class UserController extends Controller
         $docent = new ProfileDocent();
         $docent->user_id = $user->id;
         $docent->save();
+    }
+
+    //New Student
+    if($request->role == 'student'){
+        $student = new ProfileStudent();
+        $student->user_id = $user->id;
+        $student->save();
     }
 
     return redirect()->route('users.index')->with('success', 'Usuario creado correctamente');
