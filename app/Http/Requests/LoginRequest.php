@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;
+
 class LoginRequest extends FormRequest
 {
     /**
@@ -22,28 +23,42 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'username' => 'required',
-            'password' => 'required',
+            'username' => 'required|string',
+            'password' => 'required|string|min:8',
         ];
     }
 
-    public function getCredentials(){
-        $username = $this->get('username');
+    /**
+     * Get the credentials needed for login.
+     */
+    public function getCredentials(): array
+{
+    $username = $this->get('username');
 
-        if($this->isEmail($username)){
-            return[
-                'email' => $username,
-                'password' => $this->get('password')
-            ];
-
-        }
-        return $this->only('username','password');
+    // Verifica si el nombre de usuario es un correo electrónico
+    if ($this->isEmail($username)) {
+        return [
+            'email' => $username,
+            'password' => $this->get('password')
+        ];
     }
 
-    public function isEmail($value){
+    // Si no es un correo, intenta con el nombre de usuario
+    return $this->only('username', 'password');
+}
+
+
+
+    /**
+     * Determine if the provided value is an email address.
+     */
+    public function isEmail($value): bool
+    {
         $factory = $this->container->make(ValidationFactory::class);
 
-        return !$factory->make(['username' => $value],['username' => 'email'])->fails();
-
+        return !$factory->make(
+            ['username' => $value],
+            ['username' => 'email']
+        )->fails();
     }
 }

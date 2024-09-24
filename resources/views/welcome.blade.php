@@ -23,20 +23,20 @@
         <!-- Authenticated User Buttons -->
         @auth
             @if(auth()->user()->role === 'student')
-                <a href="{{ route('students.index') }}" class="bg-green-600 text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-green-500 transition-transform transform hover:scale-105">
+                <a href="{{ route('home.index') }}" class="bg-green-600 text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-green-500 transition-transform transform hover:scale-105">
                     Ir a Estudiantes
                 </a>
             @elseif(auth()->user()->role === 'health_professional')
-                <a href="{{ route('healthprofessional.index') }}" class="bg-green-600 text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-green-500 transition-transform transform hover:scale-105">
+                <a href="{{ route('home.index') }}" class="bg-green-600 text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-green-500 transition-transform transform hover:scale-105">
                     Ir a Profesionales de la Salud
                 </a>
             @elseif(auth()->user()->role === 'docent')
-                <a href="{{ route('teachers.index') }}" class="bg-green-600 text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-green-500 transition-transform transform hover:scale-105">
+                <a href="{{ route('home.index') }}" class="bg-green-600 text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-green-500 transition-transform transform hover:scale-105">
                     Ir a Docentes
                 </a>
             @endif
         @else
-            <a href="{{ route('login.show') }}" class="bg-green-600 text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-green-500 transition-transform transform hover:scale-105 animate-bounce">
+            <a href="{{ route('login') }}" class="bg-green-600 text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-green-500 transition-transform transform hover:scale-105 animate-bounce">
                 Iniciar Sesión
             </a>
         @endauth
@@ -265,26 +265,7 @@
         </div>
     </section>
     
-    
 
-    <!-- Future Features -->
-<section id="future" class="container mx-auto mt-24 px-4 py-16 bg-gradient-to-r from-purple-50 to-purple-300 rounded-lg shadow-xl max-w-4xl">
-    <div class="flex flex-col md:flex-row items-center md:justify-start">
-        <div class="flex-shrink-0 mb-8 md:mb-0">
-            <i class="fas fa-rocket text-purple-600 text-8xl"></i>
-        </div>
-        <div class="md:ml-6">
-            <h2 class="text-3xl font-extrabold mb-4 text-gray-900 text-center md:text-left">Características Futuras</h2>
-            <p class="text-lg mb-4 text-gray-800 text-center md:text-left">En esta sección se explorarán las futuras actualizaciones y características planeadas para SERENA:</p>
-            <ul class="text-gray-800 mb-6 space-y-2 text-center md:text-left">
-                <li><i class="fas fa-check-circle text-purple-600 mr-2"></i> Integración con nuevas tecnologías de análisis de datos.</li>
-                <li><i class="fas fa-check-circle text-purple-600 mr-2"></i> Mejora en la interfaz de usuario basada en el feedback de los usuarios.</li>
-                <li><i class="fas fa-check-circle text-purple-600 mr-2"></i> Nuevas funcionalidades para la gestión y análisis de datos educativos.</li>
-            </ul>
-            <p class="text-lg text-gray-800 text-center md:text-left">Estamos comprometidos a seguir innovando y mejorando la plataforma para ofrecerte la mejor experiencia posible.</p>
-        </div>
-    </div>
-</section>
 
 <!-- Footer Section -->
 <footer class="bg-gradient-to-r from-blue-800 via-blue-900 to-blue-800 text-white py-12 mt-24 rounded-t-3xl border-t-4 border-blue-700 relative overflow-hidden">
@@ -296,20 +277,23 @@
                 <h2 class="text-5xl font-extrabold mb-3 text-shadow-xl">SERENA</h2>
                 <p class="text-lg mb-5 leading-relaxed">Transformando la gestión de datos estudiantiles con innovación y simplicidad.</p>
                 <p class="text-sm text-gray-300">&copy; 2024 SERENA. Todos los derechos reservados.</p>
+                <p style="margin-bottom: 0;">
+                    Diseñado por: 
+                    <a href="https://www.linkedin.com/in/aisoranar/" target="_blank" style="color: #f8f9fa; text-decoration: none; font-weight: bold; 
+                              transition: color 0.3s ease, text-shadow 0.3s ease; 
+                              text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);">
+                        Juan Gomez & Aisor Anaya
+                </a>
+            </p>
             </div>
 
             <!-- Social Media Links -->
             <div class="flex justify-center space-x-8 mb-8">
-                <a href="#" class="text-gray-300 hover:text-white transition-transform duration-300 transform hover:scale-125 text-3xl">
+                <a href="https://web.facebook.com/profile.php?id=100010477652901" class="text-gray-300 hover:text-white transition-transform duration-300 transform hover:scale-125 text-3xl" target="_blank">
                     <i class="fab fa-facebook-f"></i>
                 </a>
-                <a href="#" class="text-gray-300 hover:text-white transition-transform duration-300 transform hover:scale-125 text-3xl">
-                    <i class="fab fa-twitter"></i>
-                </a>
-                <a href="#" class="text-gray-300 hover:text-white transition-transform duration-300 transform hover:scale-125 text-3xl">
-                    <i class="fab fa-linkedin-in"></i>
-                </a>
-                <a href="#" class="text-gray-300 hover:text-white transition-transform duration-300 transform hover:scale-125 text-3xl">
+                              
+                <a href="https://www.instagram.com/permanenciaestudiantilunipaz" class="text-gray-300 hover:text-white transition-transform duration-300 transform hover:scale-125 text-3xl"target="_blank">
                     <i class="fab fa-instagram"></i>
                 </a>
             </div>

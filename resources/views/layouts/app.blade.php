@@ -81,23 +81,9 @@
             </a>
             <div class="hidden md:flex space-x-6">
                 <a href="{{ url('/') }}" class="navbar-link text-blue-900">Inicio</a>
-                @auth
-                    @if(auth()->user()->role === 'student')
-                        <!-- Asegúrate de que esta ruta apunte a 'students.index' -->
-                        <a href="{{ route('students.index') }}" class="navbar-link text-blue-900">Estudiantes</a>
-                        @elseif(auth()->user()->role === 'health_professional')
-                        <a href="{{ route('healthprofessional.index') }}" class="navbar-link text-blue-900">Profesional de Salud</a>
-                    @elseif(auth()->user()->role === 'docent')
-                        <a href="{{ route('teachers.index') }}" class="navbar-link text-blue-900">Docentes</a>
-                    @endif
-                    <form action="{{ route('logout') }}" method="POST" class="inline">
-                        @csrf
-                        <button type="submit" class="navbar-link text-blue-900">Cerrar sesión</button>
-                    </form>
-                @else
-                    <a href="{{ route('login.show') }}" class="navbar-link text-blue-900">Ingresar</a>
+                   
+                    <a href="{{ route('login') }}" class="navbar-link text-blue-900">Ingresar</a>
                     <a href="{{ route('register.show') }}" class="navbar-link text-blue-900">Registrarse</a>
-                @endauth
             </div>
         </div>
     </nav>
@@ -120,22 +106,9 @@
             </div>
             <div class="flex flex-col items-center py-8">
                 <a href="{{ url('/') }}" class="text-blue-900 py-2 text-xl">Inicio</a>
-                @auth
-                    @if(auth()->user()->role === 'student')
-                        <a href="{{ route('students.index') }}" class="text-blue-900 py-2 text-xl">Estudiantes</a>
-                    @elseif(auth()->user()->role === 'health_professional')
-                        <a href="{{ route('healthprofessional.index') }}" class="text-blue-900 py-2 text-xl">Profesional de Salud</a>
-                    @elseif(auth()->user()->role === 'docent')
-                        <a href="{{ route('teachers.index') }}" class="text-blue-900 py-2 text-xl">Docentes</a>
-                    @endif
-                    <form action="{{ route('logout') }}" method="POST" class="inline">
-                        @csrf
-                        <button type="submit" class="text-blue-900 py-2 text-xl">Cerrar sesión</button>
-                    </form>
-                @else
-                    <a href="{{ route('login.show') }}" class="text-blue-900 py-2 text-xl">Ingresar</a>
+                
+                    <a href="{{ route('login') }}" class="text-blue-900 py-2 text-xl">Ingresar</a>
                     <a href="{{ route('register.show') }}" class="text-blue-900 py-2 text-xl">Registrarse</a>
-                @endauth
             </div>
         </div>
     </div>

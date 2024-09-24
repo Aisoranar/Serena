@@ -6,27 +6,24 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->nullable();
-            $table->string('username')->unique()->nullable(); // Permitir que username sea opcional
+            $table->string('first_name')->nullable(); // Primer Nombre
+            $table->string('second_name')->nullable(); // Segundo Nombre
+            $table->string('first_lastname')->nullable(); // Primer Apellido
+            $table->string('second_lastname')->nullable(); // Segundo Apellido
+            $table->string('username')->unique();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->enum('role', ['student', 'health_professional', 'docent'])->default('student');
+            $table->string('role')->default('student');
             $table->rememberToken();
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('users');

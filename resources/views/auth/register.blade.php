@@ -1,49 +1,78 @@
-{{-- resources/views/auth/register.blade.php --}}
 @extends('layouts.auth-master')
 
-@section('title', 'Registro de Usuario')
-
 @section('content')
-<div class="text-center mb-6">
-    <h1 class="text-2xl font-bold text-gray-800">Registro</h1>
-</div>
+<div class="container">
+    <form method="POST" action="{{ route('register.perform') }}">
+        @csrf
+        <div class="mb-3">
+            <label for="first_name" class="form-label">Primer Nombre</label>
+            <input type="text" class="form-control" id="first_name" name="first_name" required>
+        </div>
+        
+        <div class="mb-3">
+            <label for="second_name" class="form-label">Segundo Nombre</label>
+            <input type="text" class="form-control" id="second_name" name="second_name">
+        </div>
+        
+        <div class="mb-3">
+            <label for="first_lastname" class="form-label">Primer Apellido</label>
+            <input type="text" class="form-control" id="first_lastname" name="first_lastname" required>
+        </div>
+        
+        <div class="mb-3">
+            <label for="second_lastname" class="form-label">Segundo Apellido</label>
+            <input type="text" class="form-control" id="second_lastname" name="second_lastname">
+        </div>
 
-@if ($errors->any())
-    <div class="bg-red-100 text-red-700 p-4 rounded-lg mb-6">
-        <ul class="list-disc list-inside">
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
+        <div class="mb-3">
+            <label for="username" class="form-label">Nombre de Usuario</label>
+            <input type="text" class="form-control" id="username" name="username" required>
+        </div>
 
-<form action="{{ route('register') }}" method="POST">
-    @csrf
-    <div class="mb-4">
-        <label for="name" class="block text-sm font-medium text-gray-700">Nombre Completo</label>
-        <input type="text" name="name" class="mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
-    </div>
-    <div class="mb-4">
-        <label for="username" class="block text-sm font-medium text-gray-700">Nombre de Usuario</label>
-        <input type="text" name="username" class="mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
-    </div>
-    <div class="mb-4">
-        <label for="email" class="block text-sm font-medium text-gray-700">Correo Electrónico</label>
-        <input type="email" name="email" class="mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
-    </div>
-    <div class="mb-4">
-        <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
-        <input type="password" name="password" class="mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
-    </div>
-    <div class="mb-6">
-        <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Confirmar Contraseña</label>
-        <input type="password" name="password_confirmation" class="mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
-    </div>
-    <button type="submit" class="w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-blue-700 transition duration-300">Registrar</button>
-</form>
+        <div class="mb-3">
+            <label for="email" class="form-label">Correo Electrónico</label>
+            <input type="email" class="form-control" id="email" name="email" required>
+        </div>
 
-<div class="text-center mt-6">
-    <a href="{{ route('login.show') }}" class="text-sm text-blue-600 hover:underline">¿Ya tienes una cuenta? Inicia sesión aquí</a>
+        <div class="mb-3">
+            <label for="password" class="form-label">Contraseña</label>
+            <div class="flex items-center border rounded-lg overflow-hidden">
+                <input type="password" class="form-control border-none" id="password" name="password" required>
+                <span class="px-3 bg-gray-200 text-gray-600 cursor-pointer" onclick="togglePassword()">
+                    <i class="fas fa-eye" id="togglePasswordIcon"></i>
+                </span>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="password_confirmation" class="form-label">Confirmar Contraseña</label>
+            <div class="flex items-center border rounded-lg overflow-hidden">
+                <input type="password" class="form-control border-none" id="password_confirmation" name="password_confirmation" required>
+                <span class="px-3 bg-gray-200 text-gray-600 cursor-pointer" onclick="toggleConfirmPassword()">
+                    <i class="fas fa-eye" id="toggleConfirmPasswordIcon"></i>
+                </span>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Registrar SuperAdmin</button>
+    </form>
+
+    <script>
+        function togglePassword() {
+            const passwordField = document.getElementById('password');
+            const togglePasswordIcon = document.getElementById('togglePasswordIcon');
+            const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordField.setAttribute('type', type);
+            togglePasswordIcon.classList.toggle('fa-eye-slash');
+        }
+
+        function toggleConfirmPassword() {
+            const confirmPasswordField = document.getElementById('password_confirmation');
+            const toggleConfirmPasswordIcon = document.getElementById('toggleConfirmPasswordIcon');
+            const type = confirmPasswordField.getAttribute('type') === 'password' ? 'text' : 'password';
+            confirmPasswordField.setAttribute('type', type);
+            toggleConfirmPasswordIcon.classList.toggle('fa-eye-slash');
+        }
+    </script>
 </div>
 @endsection

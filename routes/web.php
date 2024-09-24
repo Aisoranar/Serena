@@ -4,68 +4,89 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\RegisterController;
-use App\Http\Controllers\StudentController;
-use App\Http\Controllers\TeacherController;
-use App\Http\Controllers\HealthProfessionalController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\Auth\SuperAdminController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\StudentController;
+use App\Http\Controllers\DocentController;
+use App\Http\Controllers\ProfileDocentController;
 
-// Página de inicio
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+| Aquí se registran las rutas para la aplicación. Estas rutas son cargadas
+| por el RouteServiceProvider dentro de un grupo que contiene el middleware "web".
+|
+*/
+
+// Ruta de la página principal
 Route::get('/', function () {
     return view('welcome');
-})->name('welcome');
+});
 
-// Rutas de registro
-Route::get('/register', [RegisterController::class, 'show'])->name('register.show');
-Route::post('/register', [RegisterController::class, 'register'])->name('register');
+// Rutas de autenticación para el SuperAdmin
+Route::middleware(['auth', 'role:superadmin'])->group(function () {
 
-// Rutas de inicio de sesión
-Route::get('/login', [LoginController::class, 'show'])->name('login.show');
-Route::post('/login', [LoginController::class, 'login'])->name('login');
+    // CRUD de usuarios, accesible solo para el SuperAdmin
+    Route::resource('users', UserController::class);
 
-// Ruta para cerrar sesión
-Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
+    // Ruta para la creación de roles (incluye los roles 'docent' y 'student')
+    Route::post('/superadmin/create-role', [SuperAdminController::class, 'createRole'])->name('superadmin.createRole');
 
-// Rutas protegidas por autenticación
+    // Dashboard del SuperAdmin
+    Route::get('/superadmin', [SuperAdminController::class, 'index'])->name('superadmin.index');
+
+    // Ruta para cerrar sesión del SuperAdmin
+    Route::post('/superadmin/logout', [SuperAdminController::class, 'logout'])->name('superadmin.logout');
+});
+
+// Rutas de registro solo para el SuperAdmin
+Route::get('/register', [RegisterController::class, 'show'])->name('register.show')->middleware('guest');
+Route::post('/register', [RegisterController::class, 'register'])->name('register.perform')->middleware('guest');
+
+// Rutas de login (accesibles para cualquier usuario no autenticado)
+Route::get('/login', [LoginController::class, 'show'])->name('login')->middleware('guest');
+Route::post('/login', [LoginController::class, 'login'])->name('login.perform')->middleware('guest');
+
+Route::middleware('auth')->group(function () {
+    // Ruta accesible para superadmin y estudiante
+    Route::get('/estudiante', function () {
+        return view('view.estudiante.index'); // Redirige a view/estudiante/index.blade.php
+    })->name('estudiante.dashboard')->middleware('role:student|superadmin');
+
+    // Ruta accesible solo para superadmin y docente
+    Route::get('/docente', function () {
+        return view('view.docente.index'); // Redirige a view/docente/index.blade.php
+    })->name('docente.dashboard')->middleware('role:docent|superadmin');
+});
+
+// Ruta para mostrar el home de usuarios autenticados
+Route::get('/home', [HomeController::class, 'index'])->name('home.index')->middleware('auth');
+
+// Ruta para cerrar sesión usando POST (accesible para todos los usuarios autenticados)
+Route::post('/logout', [LogoutController::class, 'logout'])->name('logout.perform')->middleware('auth');
+
+// Rutas para gestionar el perfil del estudiante
+Route::get('/perfil/{id}/editar', [StudentController::class, 'edit'])->name('perfil.editar')->middleware('auth');
+Route::put('/perfil/{id}', [StudentController::class, 'update'])->name('student.update')->middleware('auth');
+
+// Rutas para la lista de docentes y estudiantes
 Route::middleware(['auth'])->group(function () {
+    // Ruta para la vista de docentes, accesible solo para superadmin
+    Route::get('/list/docent', [DocentController::class, 'index'])
+        ->name('list.docent')
+        ->middleware('role:superadmin');
 
-    // Ruta principal después de iniciar sesión
-    Route::get('/home', [HomeController::class, 'index'])->name('home');
+    // Ruta para la vista de estudiantes, accesible para docentes y superadmin
+    Route::get('/list/students', [StudentController::class, 'index'])
+        ->name('list.students')
+        ->middleware('role:docent|superadmin');
+});
 
-    // Rutas para estudiantes (solo vista y documentos)
-    Route::middleware(['role:student'])->group(function () {
-        Route::get('/students', [StudentController::class, 'index'])->name('students.index');
-        Route::get('/students/show', [StudentController::class, 'show'])->name('students.show');
-        Route::post('/students/upload-documents', [StudentController::class, 'uploadDocuments'])->name('students.upload_documents');
-        Route::get('/students/view-document/{id}', [StudentController::class, 'viewDocument'])->name('students.view_document');
-    });
+// Ruta para mostrar el perfil del docente
+Route::middleware('auth')->group(function () {
+    Route::get('/docente/perfil/{id}', [ProfileDocentController::class, 'show'])
+    ->name('docente.perfil.show');
 
-    // Rutas para profesionales de la salud
-    Route::middleware(['role:health_professional'])->group(function () {
-        Route::resource('healthprofessional', HealthProfessionalController::class)->names([
-            'index' => 'healthprofessional.index',
-            'create' => 'healthprofessional.create',
-            'store' => 'healthprofessional.store',
-            'show' => 'healthprofessional.show',
-            'edit' => 'healthprofessional.edit',
-            'update' => 'healthprofessional.update',
-            'destroy' => 'healthprofessional.destroy',
-        ]);
-        Route::post('healthprofessional/{student}/upload-documents', [HealthProfessionalController::class, 'uploadDocuments'])->name('healthprofessional.upload_documents');
-        Route::get('healthprofessional/{student}/view-document/{id}', [HealthProfessionalController::class, 'viewDocument'])->name('healthprofessional.view_document');
-        Route::get('healthprofessional/{student}/citas', [HealthProfessionalController::class, 'citas'])->name('healthprofessional.citas');
-        Route::post('healthprofessional/{student}/add-cita', [HealthProfessionalController::class, 'addCita'])->name('healthprofessional.add_cita');
-    });
-
-    // Rutas para docentes
-    Route::middleware(['role:docent'])->group(function () {
-        Route::resource('teachers', TeacherController::class)->names([
-            'index' => 'teachers.index',
-            'create' => 'teachers.create',
-            'store' => 'teachers.store',
-            'show' => 'teachers.show',
-            'edit' => 'teachers.edit',
-            'update' => 'teachers.update',
-            'destroy' => 'teachers.destroy',
-        ]);
-    });
 });

@@ -1,173 +1,235 @@
-{{-- resources/views/layouts/app-master.blade.php --}}
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'SERENA')</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="{{ asset('assets/img/ISOLOGOASRANS.svg') }}" type="image/svg+xml">
+
+    <!-- Meta Descripción para SEO -->
+    <meta name="description" content="SERENA">
+
+    <!-- Keywords para SEO -->
+    <meta name="keywords" content="SERENA">
+
+    <!-- Meta Open Graph para redes sociales -->
+    <meta property="og:title" content="SERENA">
+    <meta property="og:description" content="Sistema de automatización para enviar notificaciones por WhatsApp, guardar registros y ofrecer retroalimentación inmediata.">
+    <meta property="og:image" content="{{ asset('assets/img/ISOLOGOASRANS.svg') }}">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:type" content="website">
+
+    <!-- Meta Twitter Card para compartir en Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="SERENA">
+    <meta name="twitter:description" content="Sistema de automatización para enviar notificaciones por WhatsApp, guardar registros y ofrecer retroalimentación inmediata.">
+    <meta name="twitter:image" content="{{ asset('assets/img/ISOLOGOASRANS.svg') }}">
+
     <!-- Tailwind CSS -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- Custom Styles -->
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+
     <style>
-        /* Animaciones personalizadas */
+        /* Navbar hover/active effects */
+        .nav-link {
+            position: relative;
+            display: inline-block;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -4px;
+            height: 2px;
+            background-color: #FFD700;
+            width: 0;
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        /* Mobile menu transition */
+        #mobile-menu {
+            transition: max-height 0.5s ease-in-out, opacity 0.3s ease-in-out;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        #mobile-menu.open {
+            max-height: 500px;
+            opacity: 1;
+        }
+
+        /* Mobile nav link styles */
+        .mobile-nav-link {
+            display: block;
+            padding: 10px;
+            text-align: center;
+            color: white;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        .mobile-nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .mobile-nav-icon {
+            margin-right: 8px;
+        }
+
+        /* Animation for user actions */
+        .btn-hover-grow {
+            transition: transform 0.3s;
+        }
+        .btn-hover-grow:hover {
+            transform: scale(1.05);
+        }
+
+        /* Fade-in effect */
+        .fade-in {
+            animation: fadeIn 1s ease-out;
+        }
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
         }
 
-        .animate-fade-in {
-            animation: fadeIn 1.5s ease-in-out;
-        }
-
-        /* Navbar Styling */
-        .navbar {
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            background-color: #ffffff;
-            z-index: 50;
-        }
-        .navbar-link {
-            transition: color 0.3s ease;
-        }
-        .navbar-link:hover {
-            color: #2563eb;
-        }
-        .navbar-logo {
-            color: #2563eb;
-        }
-        .navbar-logo-icon {
-            color: #2563eb;
-        }
-        /* Mobile Menu */
-        .mobile-menu {
-            transform: translateX(-100%);
-            transition: transform 0.3s ease-in-out;
-            width: 80%;
-            max-width: 300px;
-            background: #ffffff;
-        }
-        .mobile-menu-open {
-            transform: translateX(0);
-        }
-        .mobile-menu-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 40;
-            opacity: 0;
-            transition: opacity 0.3s ease-in-out;
-        }
-        .mobile-menu-overlay-open {
-            opacity: 1;
-        }
-        /* Fix scroll issue */
-        body.menu-open {
-            overflow: hidden;
+        /* Responsive adjustments */
+        @media (min-width: 640px) {
+            #mobile-menu {
+                max-height: none;
+                opacity: 1;
+            }
         }
     </style>
 </head>
-<body class="bg-gray-100 text-gray-900">
-
+<body class="bg-gray-100 text-gray-900 antialiased leading-normal flex flex-col min-h-screen">
     <!-- Navbar -->
-    <nav class="navbar bg-white fixed w-full z-50 top-0 left-0">
+    <header class="bg-blue-900 shadow-lg">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="{{ url('/') }}" class="text-3xl font-bold navbar-logo flex items-center">
-                <i class="fas fa-graduation-cap text-blue-600 mr-2"></i> SERENA
+            <a href="/" class="text-white font-bold text-xl hover:text-yellow-300 transition duration-300">
+                <i class="fas fa-building"></i> SERENA
             </a>
-            <div class="hidden md:flex space-x-6">
-                <a href="{{ url('/') }}" class="navbar-link text-blue-900">Inicio</a>
-                @auth
-                    @if(auth()->user()->role === 'student')
-                        <a href="{{ route('students.index') }}" class="navbar-link text-blue-900">Estudiantes</a>
-                    @elseif(auth()->user()->role === 'health_professional')
-                        <a href="{{ route('healthprofessional.index') }}" class="navbar-link text-blue-900">Profesional de Salud</a>
-                    @elseif(auth()->user()->role === 'docent')
-                        <a href="{{ route('teachers.index') }}" class="navbar-link text-blue-900">Docentes</a>
-                    @endif
-                    <form action="{{ route('logout') }}" method="POST" class="inline">
-                        @csrf
-                        <button type="submit" class="navbar-link text-blue-900">Cerrar sesión</button>
-                    </form>
-                @else
-                    <a href="{{ route('login.show') }}" class="navbar-link text-blue-900">Ingresar</a>
-                    <a href="{{ route('register.show') }}" class="navbar-link text-blue-900">Registrarse</a>
-                @endauth
-            </div>
-            <!-- Mobile menu button -->
-            <div class="md:hidden flex items-center">
-                <button id="mobile-menu-button" class="text-blue-900 focus:outline-none">
-                    <svg class="svg-inline--fa fa-bars text-2xl" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="bars" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M0 96C0 78.33 14.33 64 32 64H416C433.7 64 448 78.33 448 96C448 113.7 433.7 128 416 128H32C14.33 128 0 113.7 0 96zM0 256C0 238.3 14.33 224 32 224H416C433.7 224 448 238.3 448 256C448 273.7 433.7 288 416 288H32C14.33 288 0 273.7 0 256zM416 448H32C14.33 448 0 433.7 0 416C0 398.3 14.33 384 32 384H416C433.7 384 448 398.3 448 416C448 433.7 433.7 448 416 448z"></path></svg>
-                </button>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Mobile Menu Overlay -->
-    <div id="mobile-menu-overlay" class="mobile-menu-overlay"></div>
-
-    <!-- Mobile Menu -->
-    <div id="mobile-menu" class="mobile-menu fixed inset-0 bg-white shadow-lg z-50">
-        <div class="flex flex-col h-full">
-            <div class="flex justify-between items-center p-4 border-b">
-                <a href="{{ url('/') }}" class="text-3xl font-bold navbar-logo flex items-center">
-                    <i class="fas fa-graduation-cap text-blue-600 mr-2"></i> SERENA
+    
+            <!-- Mobile Menu Toggle -->
+            <button class="text-white sm:hidden focus:outline-none" id="nav-toggle">
+                <svg class="w-6 h-6 hover:text-yellow-300 transition duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+    
+            <!-- Desktop Menu -->
+            <nav class="hidden sm:flex space-x-6 items-center" id="nav-menu">
+                <a href="{{ route('home.index') }}" class="nav-link text-white font-semibold hover:text-yellow-300 transition duration-300 flex items-center @if(request()->routeIs('home.index')) active @endif">
+                    <i class="fas fa-home mr-2"></i> Inicio
                 </a>
-                <button id="close-menu" class="text-blue-900 text-2xl focus:outline-none">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="flex flex-col items-center py-8">
-                <a href="{{ url('/') }}" class="text-blue-900 py-2 text-xl">Inicio</a>
-                @auth
-                    @if(auth()->user()->role === 'student')
-                        <a href="{{ route('students.index') }}" class="text-blue-900 py-2 text-xl">Estudiantes</a>
-                    @elseif(auth()->user()->role === 'health_professional')
-                        <a href="{{ route('healthprofessional.index') }}" class="text-blue-900 py-2 text-xl">Profesional de Salud</a>
-                    @elseif(auth()->user()->role === 'docent')
-                        <a href="{{ route('teachers.index') }}" class="text-blue-900 py-2 text-xl">Docentes</a>
-                    @endif
-                    <form action="{{ route('logout') }}" method="POST" class="inline">
-                        @csrf
-                        <button type="submit" class="text-blue-900 py-2 text-xl">Cerrar sesión</button>
-                    </form>
-                @else
-                    <a href="{{ route('login.show') }}" class="text-blue-900 py-2 text-xl">Ingresar</a>
-                    <a href="{{ route('register.show') }}" class="text-blue-900 py-2 text-xl">Registrarse</a>
-                @endauth
-            </div>
+    
+                
+                @if(Auth::check())
+                @if(Auth::user()->role === 'student')
+                    <!-- Perfil Estudiante -->
+                    <a href="{{ route('perfil.editar', ['id' => Auth::id()]) }}" class="nav-link text-white font-semibold hover:text-yellow-300 transition duration-300 flex items-center @if(request()->routeIs('perfil.editar')) active @endif">
+                        <i class="fas fa-user-graduate mr-2"></i> Perfil
+                    </a>
+                @elseif(in_array(Auth::user()->role, ['docent', 'superadmin']))
+                    <!-- Lista de Estudiantes -->
+                    <a href="{{ route('list.students') }}" class="nav-link text-white font-semibold hover:text-yellow-300 transition duration-300 flex items-center @if(request()->routeIs('lista.estudiantes')) active @endif">
+                        <i class="fas fa-users mr-2"></i> Lista de estudiantes
+                    </a>
+                @endif
+            @endif
+            
+            
+            @if(Auth::user()->role === 'docent')
+    <!-- Perfil Docente -->
+    <a href="{{ route('docente.perfil.show', ['id' => Auth::user()->id]) }}" class="nav-link text-white font-semibold hover:text-yellow-300 transition duration-300 flex items-center">
+        <i class="fas fa-chalkboard-teacher mobile-nav-icon"></i> Perfil Docente
+    </a>
+@endif
+
+        
+
+
+                @if(Auth::check() && Auth::user()->role === 'superadmin')
+                    <a href="{{ route('users.index') }}" class="nav-link text-white font-semibold hover:text-yellow-300 transition duration-300 flex items-center @if(request()->routeIs('users.index')) active @endif">
+                        <i class="fas fa-cogs mr-2"></i> Configuración
+                    </a>
+                @endif
+    
+                <!-- Logout button -->
+                <form id="logout-form" action="{{ route('logout.perform') }}" method="POST" class="flex items-center">
+                    @csrf
+                    <button type="submit" class="nav-link text-white font-semibold hover:text-yellow-300 transition duration-300 flex items-center">
+                        <i class="fas fa-sign-out-alt mr-2"></i> Cerrar Sesión
+                    </button>
+                </form>
+            </nav>
         </div>
-    </div>
+    
+        <!-- Mobile Menu -->
+        <div class="sm:hidden bg-blue-800 py-2" id="mobile-menu">
+            <a href="{{ route('home.index') }}" class="mobile-nav-link">
+                <i class="fas fa-home mobile-nav-icon"></i> Inicio
+            </a>
+    
+            
+
+            @if(Auth::user()->role === 'docent')
+    <!-- Perfil Docente -->
+    <a href="{{ route('docente.perfil.show', ['id' => Auth::user()->id]) }}" class="nav-link text-white font-semibold hover:text-yellow-300 transition duration-300 flex items-center">
+        <i class="fas fa-chalkboard-teacher mobile-nav-icon"></i> Perfil Docente
+    </a>
+@endif
+
+
+
+            @if(Auth::check() && Auth::user()->role === 'superadmin')
+                <a href="{{ route('users.index') }}" class="mobile-nav-link">
+                    <i class="fas fa-cogs mobile-nav-icon"></i> Configuración
+                </a>
+            @endif
+    
+            <!-- Mobile Logout -->
+            <form id="logout-form-mobile" action="{{ route('logout.perform') }}" method="POST" class="block text-center">
+                @csrf
+                <button type="submit" class="mobile-nav-link">
+                    <i class="fas fa-sign-out-alt mobile-nav-icon"></i> Cerrar Sesión
+                </button>
+            </form>
+        </div>
+    </header>
+    
 
     <!-- Main Content -->
-    <div class="pt-20">
+    <main class="flex-grow container mx-auto py-8 fade-in">
         @yield('content')
-    </div>
+    </main>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.9.1/cdn.min.js"></script>
+    <!-- Footer -->
+    <footer class="bg-blue-900 text-white py-4 mt-auto">
+        <div class="container mx-auto text-center">
+            <p>&copy; {{ date('Y') }} ASRA - NS. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
     <script>
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
-        const closeMenuButton = document.getElementById('close-menu');
-        const body = document.body;
-
-        mobileMenuButton.addEventListener('click', () => {
-            mobileMenu.classList.add('mobile-menu-open');
-            mobileMenuOverlay.classList.add('mobile-menu-overlay-open');
-            body.classList.add('menu-open'); // Disable scroll
-        });
-
-        closeMenuButton.addEventListener('click', () => {
-            mobileMenu.classList.remove('mobile-menu-open');
-            mobileMenuOverlay.classList.remove('mobile-menu-overlay-open');
-            body.classList.remove('menu-open'); // Enable scroll
-        });
-
-        mobileMenuOverlay.addEventListener('click', () => {
-            mobileMenu.classList.remove('mobile-menu-open');
-            mobileMenuOverlay.classList.remove('mobile-menu-overlay-open');
-            body.classList.remove('menu-open'); // Enable scroll
+        document.getElementById('nav-toggle').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('open');
         });
     </script>
+
+    @stack('scripts')
 </body>
 </html>

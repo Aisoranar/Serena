@@ -2,55 +2,50 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-    // Muestra la vista de login
+    // Mostrar la vista de login
     public function show()
     {
         if (Auth::check()) {
-            return redirect()->route('home');
+            return redirect('/home');
         }
         return view('auth.login');
     }
 
-    // Maneja la lógica de login
-    public function login(Request $request)
+    // Validar el login
+    public function login(LoginRequest $request)
     {
-        // Validaciones de los campos del formulario
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|min:6',
-        ]);
+        $credentials = $request->getCredentials();
 
-        $credentials = $request->only('email', 'password');
-
-        // Valida las credenciales y redirige según el resultado
-        if (Auth::attempt($credentials)) {
-            // Regenerar la sesión para evitar fijación de sesión
-            $request->session()->regenerate();
-
-            // Redirige al usuario autenticado
-            return redirect()->route('home');
+        if (!Auth::attempt($credentials)) {
+            return redirect()->to('/login')->withErrors('Username y/o contraseña incorrectos');
         }
 
-        // Si las credenciales son incorrectas, regresa con un error
-        return back()->withErrors([
-            'email' => 'Usuario y/o contraseña incorrectos.',
-        ]);
+        $user = Auth::user();
+
+        return $this->authenticated($request, $user);
     }
 
-    // Cierra la sesión del usuario
-    public function logout(Request $request)
+    // Redirigir según el rol del usuario autenticado
+    public function authenticated(Request $request, $user)
     {
-        Auth::logout();
+        if ($user->role === 'superadmin') {
+            return redirect()->route('home.index');
+        }
 
-        // Invalida la sesión actual
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+        if ($user->role === 'student') {
+            return redirect()->route('home.index'); // Redirigir a 'student'
+        }
 
-        return redirect()->route('login.show');
+        if ($user->role === 'docent') {
+            return redirect()->route('home.index'); // Redirigir a 'docent'
+        }
+
+        return redirect()->route('home.index');
     }
 }

@@ -2,72 +2,72 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Student;
-use App\Models\Document;
+use App\Models\ProfileStudent;
+use App\Models\DepartmentAndCity;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+
 
 class StudentController extends Controller
 {
     public function index()
-    {
-        $student = Student::where('user_id', Auth::id())->first();
-        
-        if (!$student) {
-            return redirect()->route('home')->withErrors('No se ha encontrado el perfil del estudiante.');
-        }
-    
-        return view('students.index', compact('student'));
-    }
-    
-
-    public function show()
-    {
-        // Obtener el estudiante relacionado con el usuario autenticado
-        $student = Student::where('user_id', Auth::id())->first();
-
-        // Manejar el caso en que no se encuentra el estudiante
-        if (!$student) {
-            return redirect()->route('students.index')->withErrors('No se ha encontrado el perfil del estudiante.');
-        }
-
-        return view('students.show', compact('student'));
+{
+    if (auth()->user()->is_superadmin) {
+        $students = ProfileStudent::with('user')->get();
+        return view('view.list.list.students', compact('students'));
     }
 
-    public function uploadDocuments(Request $request)
+    return redirect()->route('home')->with('error', 'No tienes permiso para acceder a esta página.');
+}
+
+
+    public function edit($id)
     {
-        // Validar el documento subido
+        // Obtener el perfil del estudiante o crear uno nuevo
+        $profile = ProfileStudent::firstOrCreate(['user_id' => $id], [
+            'document_type' => 'CC',
+            'document_number' => '',
+            'zone' => 'Urbana',
+            'birth_date' => now(),
+            'department_id' => 1, // Asegúrate de proporcionar valores válidos
+            'city_id' => 1, // Asegúrate de proporcionar valores válidos
+            'age' => 0, // Establecer un valor por defecto temporal
+            'address' => '', // Asegúrate de proporcionar un valor por defecto para el address
+            'phone' => '', // Asegúrate de proporcionar un valor por defecto para el phone
+        ]);
+
+        // Obtener los departamentos y ciudades
+        $departments = DepartmentAndCity::select('id', 'department')->distinct()->get();
+        $cities = DepartmentAndCity::all();
+
+        return view('view.estudiante.profile', compact('profile', 'departments', 'cities'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        // Validación de los campos
         $request->validate([
-            'document' => 'required|mimes:pdf|max:2048',
+            'document_type' => 'required|in:CC,TI,CE',
+            'document_number' => 'required|unique:profile_students,document_number,' . $id,
+            'zone' => 'required|in:Rural,Urbana',
+            'birth_date' => 'required|date',
+            'marital_status' => 'required|in:Soltero,Casado,Unión Libre,Viudo',
+            'has_children' => 'required|boolean',
+            'address' => 'required|string', // Validar el campo address
+            'phone' => 'required|string', // Validar el campo phone
+            'email' => 'required|email|unique:profile_students,email,' . $id,
+            'health_regime' => 'required',
+            'academic_program' => 'required',
+            'schedule' => 'required|in:Diurno,Nocturno',
+            'disability' => 'nullable|string',
+            'department_id' => 'required|exists:departments_and_cities,id',
+            'city_id' => 'required|exists:departments_and_cities,id',
+            'age' => 'required|integer|min:0', // Asegúrate de incluir la validación para age
         ]);
 
-        // Obtener el estudiante relacionado con el usuario autenticado
-        $student = Student::where('user_id', Auth::id())->first();
+        // Encuentra el perfil y lo actualiza
+        $profile = ProfileStudent::where('user_id', $id)->firstOrFail();
+        $profile->update($request->all());
 
-        // Redirigir con un mensaje de error si no se encuentra el perfil
-        if (!$student) {
-            return redirect()->route('students.index')->withErrors('No se ha encontrado el perfil del estudiante.');
-        }
-
-        // Subir y guardar el documento
-        $filename = $request->file('document')->getClientOriginalName();
-        $path = $request->file('document')->storeAs('documents', $filename);
-
-        $student->documents()->create([
-            'filename' => $filename,
-            'path' => $path,
-        ]);
-
-        return back()->with('success', 'Documento subido exitosamente.');
-    }
-
-    public function viewDocument($id)
-    {
-        // Buscar el documento asegurándose de que pertenece al estudiante autenticado
-        $document = Document::where('id', $id)->whereHas('student', function ($query) {
-            $query->where('user_id', Auth::id());
-        })->firstOrFail();
-
-        return response()->file(storage_path('app/' . $document->path));
+        return redirect()->route('perfil.editar', $id)->with('success', 'Perfil actualizado correctamente.');
     }
 }
