@@ -66,6 +66,32 @@
             <input type="text" id="phone" name="phone" value="{{ old('phone', $profile->phone) }}" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" >
         </div>
 
+        <!-- Departamento -->
+<div class="mb-4">
+    <label for="department_id" class="block text-sm font-medium text-gray-700">Departamento</label>
+    <select id="department_id" name="department_id" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" onchange="updateCities()">
+        <option value="">Seleccione un departamento</option>
+        @foreach($departments as $department => $cities)
+            <optgroup label="{{ $department }}">
+                <option value="{{ $cities[0]->department }}" data-cities="{{ json_encode($cities) }}">
+                    {{ $department }}
+                </option>
+            </optgroup>
+        @endforeach
+    </select>
+</div>
+
+<!-- Ciudad -->
+<div class="mb-4">
+    <label for="city_id" class="block text-sm font-medium text-gray-700">Ciudad</label>
+    <select id="city_id" name="city_id" class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+        <option value="">Seleccione una ciudad</option>
+    </select>
+</div>
+
+
+
+
         <div class="mb-4">
             <label for="health_regime" class="block text-sm font-medium text-gray-700">Régimen de Salud</label>
             <input type="text" id="health_regime" name="health_regime" value="{{ old('health_regime', $profile->health_regime) }}" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" >
@@ -121,6 +147,26 @@
         } else {
             ageInput.value = ''; // Si no hay fecha de nacimiento, vacía el campo de edad
         }
+    }
+
+    function updateCities() {
+        const departmentSelect = document.getElementById('department_id');
+        const citySelect = document.getElementById('city_id');
+
+        // Limpiar las opciones de ciudad
+        citySelect.innerHTML = '<option value="">Seleccione una ciudad</option>';
+
+        // Obtener las ciudades del departamento seleccionado
+        const selectedDepartment = departmentSelect.options[departmentSelect.selectedIndex];
+        const cities = selectedDepartment ? JSON.parse(selectedDepartment.getAttribute('data-cities')) : [];
+
+        // Agregar las ciudades al select
+        cities.forEach(city => {
+            const option = document.createElement('option');
+            option.value = city.id;
+            option.textContent = city.city;
+            citySelect.appendChild(option);
+        });
     }
 </script>
 

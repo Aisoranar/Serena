@@ -20,27 +20,27 @@ class StudentController extends Controller
 }
 
 
-    public function edit($id)
-    {
-        // Obtener el perfil del estudiante o crear uno nuevo
-        $profile = ProfileStudent::firstOrCreate(['user_id' => $id], [
-            'document_type' => 'CC',
-            'document_number' => '',
-            'zone' => 'Urbana',
-            'birth_date' => now(),
-            'department_id' => 1, // Asegúrate de proporcionar valores válidos
-            'city_id' => 1, // Asegúrate de proporcionar valores válidos
-            'age' => 0, // Establecer un valor por defecto temporal
-            'address' => '', // Asegúrate de proporcionar un valor por defecto para el address
-            'phone' => '', // Asegúrate de proporcionar un valor por defecto para el phone
-        ]);
+public function edit($id)
+{
+    // Obtener el perfil del estudiante o crear uno nuevo
+    $profile = ProfileStudent::firstOrCreate(['user_id' => $id], [
+        'document_type' => 'CC',
+        'document_number' => '',
+        'zone' => 'Urbana',
+        'birth_date' => now(),
+        'department_id' => 1, // Asegúrate de proporcionar valores válidos
+        'city_id' => 1, // Asegúrate de proporcionar valores válidos
+        'age' => 0, // Establecer un valor por defecto temporal
+        'address' => '', // Asegúrate de proporcionar un valor por defecto para el address
+        'phone' => '', // Asegúrate de proporcionar un valor por defecto para el phone
+    ]);
 
-        // Obtener los departamentos y ciudades
-        $departments = DepartmentAndCity::select('id', 'department')->distinct()->get();
-        $cities = DepartmentAndCity::all();
+    // Obtener departamentos y ciudades
+    $departments = DepartmentAndCity::select('id', 'department', 'city')->get()->groupBy('department');
 
-        return view('view.estudiante.profile', compact('profile', 'departments', 'cities'));
-    }
+    return view('view.estudiante.profile', compact('profile', 'departments'));
+}
+
 
     public function update(Request $request, $id)
     {
