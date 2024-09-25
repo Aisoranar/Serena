@@ -86,9 +86,15 @@ Route::middleware(['auth'])->group(function () {
 
 // Ruta para mostrar el perfil del docente
 Route::middleware('auth')->group(function () {
+    // Ruta para mostrar el detalle del perfil del docente
     Route::get('/docente/perfil/{id}', [ProfileDocentController::class, 'show'])
-    ->name('docente.perfil.show');
-    Route::put('/docente/perfil-edit/{id}', [ProfileDocentController::class, 'edit'])
-    ->name('docente.perfil.edit');
-
+        ->name('docente.perfil.show');
+    
+    // Ruta para mostrar el formulario de edición (GET)
+    Route::get('/docente/perfil-edit/{id}', [ProfileDocentController::class, 'edit'])
+        ->name('docente.perfil.edit');
+    
+    // Ruta para actualizar el perfil (PUT)
+    Route::put('/docente/perfil/{id}', [ProfileDocentController::class, 'update'])
+        ->name('docente.perfil.update');
 });

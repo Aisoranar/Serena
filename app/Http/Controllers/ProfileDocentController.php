@@ -62,7 +62,8 @@ class ProfileDocentController extends Controller
         // Obtenemos el perfil del docente
         $docente = ProfileDocent::findOrFail($id);
 
-        return view('view.docente.edit', compact('docente'));
+        // Verifica que la vista esté correctamente referenciada
+        return view('view.docente.profile.edit', compact('docente'));
     }
 
     /**
@@ -79,10 +80,9 @@ class ProfileDocentController extends Controller
 
         // Validamos los datos del formulario
         $data = $request->validate([
-            'department_id' => 'required|exists:departments_and_cities,id',
-            'city_id' => 'required|exists:departments_and_cities,id',
-            'school' => 'required|in:Escuela de Ciencias,Escuela de Ciencias Sociales y de las Comunicaciones,Escuela Ingeniería Agroindustrial,Escuela Ingeniería Agronómica,Escuela Ingeniería Ambiental y de Saneamiento,Escuela Ingeniería de Producción,Escuela de Medicina Veterinaria y Zootecnia',
             'department' => 'required|string',
+            'school' => 'required|in:Escuela de Ciencias,Escuela de Ciencias Sociales y de las Comunicaciones,Escuela Ingeniería Agroindustrial,Escuela Ingeniería Agronómica,Escuela Ingeniería Ambiental y de Saneamiento,Escuela Ingeniería de Producción,Escuela de Medicina Veterinaria y Zootecnia',
+            'city' => 'required|string',
             'position' => 'required|string',
         ]);
 
