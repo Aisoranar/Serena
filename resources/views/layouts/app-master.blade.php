@@ -218,7 +218,7 @@
     <!-- Footer -->
     <footer class="bg-blue-900 text-white py-4 mt-auto">
         <div class="container mx-auto text-center">
-            <p>&copy; {{ date('Y') }} ASRA - NS. Todos los derechos reservados.</p>
+            <p>&copy; {{ date('Y') }} SERENA</p>
         </div>
     </footer>
 
