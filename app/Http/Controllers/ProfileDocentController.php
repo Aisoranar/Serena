@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DepartmentAndCity;
 use App\Models\ProfileDocent;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -24,8 +25,15 @@ class ProfileDocentController extends Controller
             abort(404, 'Docente no encontrado.');
         }
 
+        $departments = DepartmentAndCity::select('id', 'department', 'city')->get()->groupBy('department');
+        
+        $data =[
+            'docente'=> $docente,
+            'departments'=> $departments
+        ];
+
         // Retorna la vista con los datos del docente
-        return view('view.docente.profile', compact('docente'));
+        return view('view.docente.profile', compact('data'));
     }
 
     /**
@@ -63,7 +71,7 @@ class ProfileDocentController extends Controller
         $docente = ProfileDocent::findOrFail($id);
 
         // Verifica que la vista esté correctamente referenciada
-        return view('view.docente.profile.edit', compact('docente'));
+        return view('view.docente.profile.edit', compact(var_name: 'docente'));
     }
 
     /**
@@ -92,5 +100,17 @@ class ProfileDocentController extends Controller
         // Redirigimos al perfil con un mensaje de éxito
         return redirect()->route('docente.perfil.show', ['id' => $docente->id])
             ->with('success', 'Perfil del docente actualizado con éxito.');
+    }
+
+    public function updateDocente(Request $request, $user_id)
+    {
+        $docente = ProfileDocent::where('user_id',$user_id)->first();
+        $docente->update([
+            'department_id' => $request->department_id,
+            'school' => $request->school
+        ]);
+
+        return $this->show($user_id);
+
     }
 }

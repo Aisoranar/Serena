@@ -31,7 +31,8 @@ class ProfileStudent extends Model
         'first_name',         // Añadido
         'second_name',        // Añadido
         'first_lastname',     // Añadido
-        'second_lastname'     // Añadido
+        'second_lastname',    // Añadido
+        'observation',
     ];
 
     // Relación con el usuario (muchos a uno)

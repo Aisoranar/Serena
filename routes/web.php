@@ -80,8 +80,8 @@ Route::middleware(['auth'])->group(function () {
 
     // Ruta para la vista de estudiantes, accesible para docentes y superadmin
     Route::get('/list/students', [StudentController::class, 'index'])
-        ->name('list.students')
-        ->middleware('role:docent|superadmin');
+        ->name('list.students');
+        // ->middleware('role:docent|superadmin');
 });
 
 // Ruta para mostrar el perfil del docente
@@ -97,4 +97,21 @@ Route::middleware('auth')->group(function () {
     // Ruta para actualizar el perfil (PUT)
     Route::put('/docente/perfil/{id}', [ProfileDocentController::class, 'update'])
         ->name('docente.perfil.update');
+});
+
+// Rutas para los perfiles
+Route::middleware(['auth'])->prefix('profile')->group(function () {
+    // Ruta para mostrar el perfil del estudiante
+    Route::get('/{id}', [StudentController::class, 'show'])
+        ->name('profile.show');
+    
+    //ruta para actualizar el teacher
+    Route::put('/docente/{user_id}', [ProfileDocentController::class,'updateDocente'])->name('profile.updateDocente');
+    
+    // Ruta para actualizar el perfil del estudiante
+    Route::put('/{user_id}', [StudentController::class, 'update'])
+        ->name(name: 'profile.update');
+    
+    Route::put('/update-student/observation', [StudentController::class,'updateStudentObservation'])
+        ->name('profile.updateStudentObservation');
 });

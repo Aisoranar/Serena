@@ -12,7 +12,6 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('department_id')->nullable()->constrained('departments_and_cities')->onDelete('cascade');
-$table->foreignId('city_id')->nullable()->constrained('departments_and_cities')->onDelete('cascade');
 
 // Campos adicionales del perfil
             $table->enum('document_type', ['CC', 'TI', 'CE'])->nullable();
@@ -52,6 +51,7 @@ $table->foreignId('city_id')->nullable()->constrained('departments_and_cities')-
             ])->nullable();
             $table->enum('schedule', ['Diurno', 'Nocturno'])->nullable();
             $table->text('disability')->nullable();
+            $table->text('observation')->nullable();
 
 
             // Timestamps
