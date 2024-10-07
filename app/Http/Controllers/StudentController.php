@@ -139,18 +139,33 @@ class StudentController extends Controller
     }
 
     public function updateStudentObservation(Request $request)
-    {
-        // Encuentra al estudiante por ID
-        $student = ProfileStudent::findOrFail($request->input('student_id'));
+{
+    // Encuentra al estudiante por ID
+    $student = ProfileStudent::findOrFail($request->input('student_id'));
 
-        // Actualiza los datos
-        $student->update([
-            'observation' => $request->input('observation'),
-        ]);
+    // Validar los datos
+    $request->validate([
+        'observation' => 'nullable|string|max:255',
+        'disability' => 'nullable|string|max:255', // Validar la discapacidad si se proporciona
+        'new_disability' => 'nullable|string|max:255', // Nueva discapacidad si se proporciona
+    ]);
 
-        // Redirecciona con mensaje de éxito
-        return redirect()->back()->with('success', 'Observación actualizada exitosamente.');
-    }
+    // Si el usuario ha proporcionado una nueva discapacidad
+    $disability = $request->input('disability') === 'Otra'
+        ? $request->input('new_disability')
+        : $request->input('disability');
+
+    // Actualizar los datos, incluyendo la discapacidad
+    $student->update([
+        'observation' => $request->input('observation'),
+        'disability' => $disability,
+    ]);
+
+    // Redirecciona con mensaje de éxito
+    return redirect()->back()->with('success', 'Observación y discapacidad actualizadas exitosamente.');
+}
+
+
 
     
     

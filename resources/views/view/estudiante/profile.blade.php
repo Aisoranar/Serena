@@ -232,7 +232,6 @@
         document.getElementById('health_regime').disabled = false;
         document.getElementById('academic_program').disabled = false;
         document.getElementById('schedule').disabled = false;
-        document.getElementById('disability').disabled = false;
         document.getElementById('eps_name').disabled = false;
         // document.getElementById('sisben_classification').disabled = false;
 
@@ -265,7 +264,6 @@
         document.getElementById('health_regime').disabled = true;
         document.getElementById('academic_program').disabled = true;
         document.getElementById('schedule').disabled = true;
-        document.getElementById('disability').disabled = true;
         document.getElementById('eps_name').disabled = true;
 
         // Ocultar botones de actualizar y cancelar
