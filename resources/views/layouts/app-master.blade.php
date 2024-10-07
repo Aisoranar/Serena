@@ -16,7 +16,7 @@
 
     <!-- Meta Open Graph para redes sociales -->
     <meta property="og:title" content="SERENA">
-    <meta property="og:description" content="Sistema de automatización para enviar notificaciones por WhatsApp, guardar registros y ofrecer retroalimentación inmediata.">
+    <meta property="og:description" content="SERENA">
     <meta property="og:image" content="{{ asset('assets/img/ISOLOGOASRANS.svg') }}">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:type" content="website">
@@ -24,7 +24,7 @@
     <!-- Meta Twitter Card para compartir en Twitter -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="SERENA">
-    <meta name="twitter:description" content="Sistema de automatización para enviar notificaciones por WhatsApp, guardar registros y ofrecer retroalimentación inmediata.">
+    <meta name="twitter:description" content="SERENA">
     <meta name="twitter:image" content="{{ asset('assets/img/ISOLOGOASRANS.svg') }}">
 
     <!-- Tailwind CSS -->
@@ -118,8 +118,9 @@
     <header class="bg-blue-900 shadow-lg">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
             <a href="/" class="text-white font-bold text-xl hover:text-yellow-300 transition duration-300">
-                <i class="fas fa-building"></i> SERENA
+                <img src="/assets/img/ISOLOGOASRANS.svg" alt="Isologo" class="inline-block w-8 h-8" /> SERENA
             </a>
+            
     
             <!-- Mobile Menu Toggle -->
             <button class="text-white sm:hidden focus:outline-none" id="nav-toggle">
@@ -211,7 +212,7 @@
     
 
     <!-- Main Content -->
-    <main class="flex-grow container mx-auto py-8 fade-in">
+    <main class="flex-grow container mx-auto py-0,1 fade-in">
         @yield('content')
     </main>
 
