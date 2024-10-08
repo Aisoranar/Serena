@@ -232,7 +232,7 @@
         document.getElementById('health_regime').disabled = false;
         document.getElementById('academic_program').disabled = false;
         document.getElementById('schedule').disabled = false;
-        document.getElementById('eps_name').disabled = false;
+        // document.getElementById('eps_name').disabled = false;
         // document.getElementById('sisben_classification').disabled = false;
 
         // Mostrar botones de actualizar y cancelar
