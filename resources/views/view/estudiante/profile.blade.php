@@ -264,7 +264,7 @@
         document.getElementById('health_regime').disabled = true;
         document.getElementById('academic_program').disabled = true;
         document.getElementById('schedule').disabled = true;
-        document.getElementById('eps_name').disabled = true;
+        // document.getElementById('eps_name').disabled = true;
 
         // Ocultar botones de actualizar y cancelar
         document.getElementById('update-button').classList.add('hidden');
