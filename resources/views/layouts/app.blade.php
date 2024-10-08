@@ -121,7 +121,6 @@
                 <img src="/assets/img/ISOLOGOASRANS.svg" alt="Isologo" class="inline-block w-8 h-8" /> SERENA
             </a>
             
-    
             <!-- Mobile Menu Toggle -->
             <button class="text-white sm:hidden focus:outline-none" id="nav-toggle">
                 <svg class="w-6 h-6 hover:text-yellow-300 transition duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -134,46 +133,43 @@
                 <a href="{{ route('home.index') }}" class="nav-link text-white font-semibold hover:text-yellow-300 transition duration-300 flex items-center @if(request()->routeIs('home.index')) active @endif">
                     <i class="fas fa-home mr-2"></i> Inicio
                 </a>
-    
-                
+
                 @if(Auth::check())
-                @if(Auth::user()->role === 'student')
-                    <!-- Perfil Estudiante -->
-                    <a href="{{ route('perfil.editar', ['id' => Auth::id()]) }}" class="nav-link text-white font-semibold hover:text-yellow-300 transition duration-300 flex items-center @if(request()->routeIs('perfil.editar')) active @endif">
-                        <i class="fas fa-user-graduate mr-2"></i> Perfil
-                    </a>
-                @elseif(in_array(Auth::user()->role, ['docent', 'superadmin']))
-                    <!-- Lista de Estudiantes -->
-                    <a href="{{ route('list.students') }}" class="nav-link text-white font-semibold hover:text-yellow-300 transition duration-300 flex items-center @if(request()->routeIs('lista.estudiantes')) active @endif">
-                        <i class="fas fa-users mr-2"></i> Lista de estudiantes
+                    @if(Auth::user()->role === 'student')
+                        <!-- Perfil Estudiante -->
+                        <a href="{{ route('perfil.editar', ['id' => Auth::id()]) }}" class="nav-link text-white font-semibold hover:text-yellow-300 transition duration-300 flex items-center @if(request()->routeIs('perfil.editar')) active @endif">
+                            <i class="fas fa-user-graduate mr-2"></i> Perfil
+                        </a>
+                    @elseif(in_array(Auth::user()->role, ['docent', 'superadmin']))
+                        <!-- Lista de Estudiantes -->
+                        <a href="{{ route('list.students') }}" class="nav-link text-white font-semibold hover:text-yellow-300 transition duration-300 flex items-center @if(request()->routeIs('lista.estudiantes')) active @endif">
+                            <i class="fas fa-users mr-2"></i> Lista de estudiantes
+                        </a>
+                    @endif
+                @endif
+
+                @if(Auth::check() && Auth::user()->role === 'docent')
+                    <!-- Perfil Docente -->
+                    <a href="{{ route('docente.perfil.show', ['id' => Auth::user()->id]) }}" class="nav-link text-white font-semibold hover:text-yellow-300 transition duration-300 flex items-center">
+                        <i class="fas fa-chalkboard-teacher mobile-nav-icon"></i> Perfil Docente
                     </a>
                 @endif
-            @endif
-            
-            
-            @if(Auth::user()->role === 'docent')
-    <!-- Perfil Docente -->
-    <a href="{{ route('docente.perfil.show', ['id' => Auth::user()->id]) }}" class="nav-link text-white font-semibold hover:text-yellow-300 transition duration-300 flex items-center">
-        <i class="fas fa-chalkboard-teacher mobile-nav-icon"></i> Perfil Docente
-    </a>
-@endif
-
-        
-
 
                 @if(Auth::check() && Auth::user()->role === 'superadmin')
                     <a href="{{ route('users.index') }}" class="nav-link text-white font-semibold hover:text-yellow-300 transition duration-300 flex items-center @if(request()->routeIs('users.index')) active @endif">
                         <i class="fas fa-cogs mr-2"></i> Configuración
                     </a>
                 @endif
-    
+
                 <!-- Logout button -->
-                <form id="logout-form" action="{{ route('logout.perform') }}" method="POST" class="flex items-center">
-                    @csrf
-                    <button type="submit" class="nav-link text-white font-semibold hover:text-yellow-300 transition duration-300 flex items-center">
-                        <i class="fas fa-sign-out-alt mr-2"></i> Cerrar Sesión
-                    </button>
-                </form>
+                @if(Auth::check())
+                    <form id="logout-form" action="{{ route('logout.perform') }}" method="POST" class="flex items-center">
+                        @csrf
+                        <button type="submit" class="nav-link text-white font-semibold hover:text-yellow-300 transition duration-300 flex items-center">
+                            <i class="fas fa-sign-out-alt mr-2"></i> Cerrar Sesión
+                        </button>
+                    </form>
+                @endif
             </nav>
         </div>
     
@@ -182,17 +178,13 @@
             <a href="{{ route('home.index') }}" class="mobile-nav-link">
                 <i class="fas fa-home mobile-nav-icon"></i> Inicio
             </a>
-    
-            
 
-            @if(Auth::user()->role === 'docent')
-    <!-- Perfil Docente -->
-    <a href="{{ route('docente.perfil.show', ['id' => Auth::user()->id]) }}" class="nav-link text-white font-semibold hover:text-yellow-300 transition duration-300 flex items-center">
-        <i class="fas fa-chalkboard-teacher mobile-nav-icon"></i> Perfil Docente
-    </a>
-@endif
-
-
+            @if(Auth::check() && Auth::user()->role === 'docent')
+                <!-- Perfil Docente -->
+                <a href="{{ route('docente.perfil.show', ['id' => Auth::user()->id]) }}" class="mobile-nav-link">
+                    <i class="fas fa-chalkboard-teacher mobile-nav-icon"></i> Perfil Docente
+                </a>
+            @endif
 
             @if(Auth::check() && Auth::user()->role === 'superadmin')
                 <a href="{{ route('users.index') }}" class="mobile-nav-link">
@@ -201,36 +193,37 @@
             @endif
     
             <!-- Mobile Logout -->
-            <form id="logout-form-mobile" action="{{ route('logout.perform') }}" method="POST" class="block text-center">
-                @csrf
-                <button type="submit" class="mobile-nav-link">
-                    <i class="fas fa-sign-out-alt mobile-nav-icon"></i> Cerrar Sesión
-                </button>
-            </form>
+            @if(Auth::check())
+                <form id="logout-form-mobile" action="{{ route('logout.perform') }}" method="POST" class="block text-center">
+                    @csrf
+                    <button type="submit" class="mobile-nav-link">
+                        <i class="fas fa-sign-out-alt mobile-nav-icon"></i> Cerrar Sesión
+                    </button>
+                </form>
+            @endif
         </div>
     </header>
     
-
     <!-- Main Content -->
     <main class="flex-grow container mx-auto py-0,1 fade-in">
         @yield('content')
     </main>
 
     <!-- Footer -->
-    <footer class="bg-blue-900 text-white py-4 mt-auto">
+    <footer class="bg-gray-900 text-white py-4">
         <div class="container mx-auto text-center">
-            <p>&copy; {{ date('Y') }} SERENA</p>
+            <p>&copy; {{ date('Y') }} SERENA. Todos los derechos reservados.</p>
         </div>
     </footer>
 
-    <!-- Scripts -->
+    <!-- JavaScript for Mobile Menu Toggle -->
     <script>
-        document.getElementById('nav-toggle').addEventListener('click', function() {
-            const menu = document.getElementById('mobile-menu');
-            menu.classList.toggle('open');
-        });
+        const navToggle = document.getElementById('nav-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const toggleMenu = () => {
+            mobileMenu.classList.toggle('open');
+        };
+        navToggle.addEventListener('click', toggleMenu);
     </script>
-
-    @stack('scripts')
 </body>
 </html>
