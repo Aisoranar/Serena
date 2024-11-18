@@ -41,6 +41,12 @@
 
                     <td class="px-2 py-2 text-xs sm:text-sm">{{ $student->observation }}</td>
                     <td class="px-2 py-2">
+                        <!-- Botón para ver la auditoría con un ícono de ojo -->
+                        <a href="{{ route('students.audit.show', $student->id) }}" class="text-blue-500 hover:text-blue-700">
+                            <i class="fas fa-eye"></i>
+                        </a>
+
+                        <!-- Botón para editar la observación -->
                         <button 
                             id="btnObservation"
                             class="text-yellow-500 hover:text-yellow-700"
@@ -49,6 +55,7 @@
                             <i class="fas fa-edit"></i>
                         </button>
                     </td>
+
                 </tr>
                 @endforeach
             </tbody>
@@ -160,6 +167,8 @@
             </form>
         </div>
     </div>
+
+    
 
     @endif
 </div>

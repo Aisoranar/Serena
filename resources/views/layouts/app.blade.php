@@ -36,6 +36,10 @@
     <!-- Custom Styles -->
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+
     <style>
         /* Navbar hover/active effects */
         .nav-link {

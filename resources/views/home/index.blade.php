@@ -113,7 +113,6 @@
             <div class="ml-6">
                 <h2 class="text-3xl font-semibold mb-3">Inicio</h2>
                 <p class="text-lg mb-4">Descubre la funcionalidad de SERENA, una plataforma diseñada para facilitar el acceso y gestión de información estudiantil.</p>
-                <a href="#about" class="text-blue-600 hover:text-blue-800 font-semibold">Ver más</a>
             </div>
         </div>
 
@@ -124,7 +123,6 @@
             <div class="ml-6">
                 <h2 class="text-3xl font-semibold mb-3">Docentes</h2>
                 <p class="text-lg mb-4">Accede a recursos y guías diseñados para docentes, que ayudan en la caracterización y acompañamiento de los estudiantes.</p>
-                <a href="#docentes" class="text-blue-600 hover:text-blue-800 font-semibold">Ver más</a>
             </div>
         </div>
 
@@ -135,7 +133,6 @@
             <div class="ml-6">
                 <h2 class="text-3xl font-semibold mb-3">Estudiantes</h2>
                 <p class="text-lg mb-4">Conoce las estrategias y consejos para fomentar la inclusión y participación activa en el entorno educativo.</p>
-                <a href="#estudiantes" class="text-blue-600 hover:text-blue-800 font-semibold">Ver más</a>
             </div>
         </div>
     </div>

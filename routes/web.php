@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\DocentController;
 use App\Http\Controllers\ProfileDocentController;
+use App\Http\Controllers\StudentObservationAuditController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -82,6 +84,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/list/students', [StudentController::class, 'index'])
         ->name('list.students');
         // ->middleware('role:docent|superadmin');
+
+       // Auditoría de observaciones de estudiantes
+        Route::get('/students/{id}/audit', [StudentObservationAuditController::class, 'show'])->name('students.audit.show');
+        Route::post('/students/{id}/audit', [StudentObservationAuditController::class, 'store'])->name('students.audit.store');
+        
+
 });
 
 // Ruta para mostrar el perfil del docente
@@ -115,3 +123,5 @@ Route::middleware(['auth'])->prefix('profile')->group(function () {
     Route::put('/update-student/observation', [StudentController::class,'updateStudentObservation'])
         ->name('profile.updateStudentObservation');
 });
+
+

@@ -39,7 +39,7 @@
                     <div>
                         <label for="second_name" class="block text-gray-700">Segundo Nombre</label>
                         <input type="text" id="second_name" name="second_name"
-                            value="{{ $data['docente']->user->second_name }}" class="border border-gray-300 p-2 w-full"
+                            value="{{ old('second_name', $data['docente']->user->second_name) }}" class="border border-gray-300 p-2 w-full"
                             disabled>
                     </div>
 
@@ -53,7 +53,7 @@
                     <div>
                         <label for="second_lastname" class="block text-gray-700">Segundo Apellido</label>
                         <input type="text" id="second_lastname" name="second_lastname"
-                            value="{{ $data['docente']->user->second_lastname }}" class="border border-gray-300 p-2 w-full"
+                            value="{{ old('second_lastname', $data['docente']->user->second_lastname) }}" class="border border-gray-300 p-2 w-full"
                             disabled>
                     </div>
 
@@ -122,9 +122,14 @@
 
         function enableEdit() {
             console.log('Habilitar edición');
-            // Habilitar todos los inputs excepto nombres y apellidos
+            
+            // Habilitar todos los inputs necesarios
             document.getElementById('school').disabled = false;
             document.getElementById('department_id').disabled = false;
+            
+            // Habilitar los campos de segundo nombre y segundo apellido
+            document.getElementById('second_name').disabled = false;
+            document.getElementById('second_lastname').disabled = false;
 
             // Mostrar botones de actualizar y cancelar
             const updateButton = document.getElementById('update-button');
@@ -143,6 +148,10 @@
             // Deshabilitar todos los inputs
             document.getElementById('school').disabled = true;
             document.getElementById('department_id').disabled = true;
+            
+            // Deshabilitar los campos de segundo nombre y segundo apellido
+            document.getElementById('second_name').disabled = true;
+            document.getElementById('second_lastname').disabled = true;
 
             // Ocultar botones de actualizar y cancelar
             document.getElementById('update-button').classList.add('hidden');
@@ -153,6 +162,7 @@
             editButton.classList.remove('hidden');
             editButton.disabled = false;
         }
+
     </script>
     <style>
         .transition-opacity {

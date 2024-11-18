@@ -85,32 +85,59 @@ class ProfileDocentController extends Controller
     {
         // Buscamos el perfil del docente
         $docente = ProfileDocent::findOrFail($id);
-
+    
         // Validamos los datos del formulario
         $data = $request->validate([
-            'department' => 'required|string',
+            'department_id' => 'required|exists:departments_and_cities,id',  // Este campo debe ser validado
             'school' => 'required|in:Escuela de Ciencias,Escuela de Ciencias Sociales y de las Comunicaciones,Escuela Ingeniería Agroindustrial,Escuela Ingeniería Agronómica,Escuela Ingeniería Ambiental y de Saneamiento,Escuela Ingeniería de Producción,Escuela de Medicina Veterinaria y Zootecnia',
-            'city' => 'required|string',
+            'city_id' => 'required|exists:departments_and_cities,id',  // Si también es necesario para actualizar la ciudad
             'position' => 'required|string',
         ]);
-
+    
         // Actualizamos el perfil con los datos validados
         $docente->update($data);
-
+    
         // Redirigimos al perfil con un mensaje de éxito
-        return redirect()->route('docente.perfil.show', ['id' => $docente->id])
+        return redirect()->route('docente.perfil.show', ['id' => $docente->user_id])
             ->with('success', 'Perfil del docente actualizado con éxito.');
     }
+    
 
     public function updateDocente(Request $request, $user_id)
     {
-        $docente = ProfileDocent::where('user_id',$user_id)->first();
-        $docente->update([
-            'department_id' => $request->department_id,
-            'school' => $request->school
+        // Buscar el docente por su ID de usuario
+        $user = User::findOrFail($user_id);
+    
+        // Validamos los datos recibidos
+        $data = $request->validate([
+            'first_name' => 'required|string',
+            'second_name' => 'nullable|string',
+            'first_lastname' => 'required|string',
+            'second_lastname' => 'nullable|string',
+            'school' => 'required|in:Escuela de Ciencias,Escuela de Ciencias Sociales y de las Comunicaciones,Escuela Ingeniería Agroindustrial,Escuela Ingeniería Agronómica,Escuela Ingeniería Ambiental y de Saneamiento,Escuela Ingeniería de Producción,Escuela de Medicina Veterinaria y Zootecnia',
+            'department_id' => 'required|exists:departments_and_cities,id',
         ]);
-
-        return $this->show($user_id);
-
+    
+        // Actualizar los datos del usuario
+        $user->update([
+            'first_name' => $data['first_name'],
+            'second_name' => $data['second_name'],  // Actualizar segundo nombre
+            'first_lastname' => $data['first_lastname'],
+            'second_lastname' => $data['second_lastname'],  // Actualizar segundo apellido
+        ]);
+    
+        // Actualizamos el perfil del docente (suponiendo que esto es necesario)
+        $docente = ProfileDocent::where('user_id', $user_id)->first();
+        if ($docente) {
+            $docente->update([
+                'department_id' => $data['department_id'],
+                'school' => $data['school'],
+            ]);
+        }
+    
+        // Redirigir con mensaje de éxito
+        return redirect()->route('docente.perfil.show', ['id' => $user->id])
+            ->with('success', 'Perfil del docente actualizado con éxito.');
     }
+    
 }
