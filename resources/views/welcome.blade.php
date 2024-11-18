@@ -264,33 +264,37 @@
     
 
 
+
 <!-- Footer Section -->
-<footer class="bg-gradient-to-r from-blue-800 via-blue-900 to-blue-800 text-white py-12 mt-24 rounded-t-3xl border-t-4 border-blue-700 relative overflow-hidden">
+<footer class="bg-gradient-to-r from-blue-800 via-blue-900 to-blue-800 text-white py-16 mt-24 rounded-t-3xl border-t-4 border-blue-700 relative overflow-hidden w-full">
     <div class="absolute inset-0 bg-opacity-20 bg-[url('https://www.transparenttextures.com/patterns/white-concrete.png')]"></div>
     <div class="container mx-auto px-6 md:px-12 relative z-10">
-        <div class="flex flex-col items-center">
+        <div class="flex flex-col items-center text-center">
             <!-- Footer Logo and Description -->
-            <div class="text-center mb-8">
-                <h2 class="text-5xl font-extrabold mb-3 text-shadow-xl">SERENA</h2>
-                <p class="text-lg mb-5 leading-relaxed">Transformando la gestión de datos estudiantiles con innovación y simplicidad.</p>
+            <div class="mb-8">
+                <h2 class="text-6xl font-extrabold text-shadow-xl mb-4 text-white">SERENA</h2>
+                <p class="text-lg mb-5 leading-relaxed text-gray-200 max-w-2xl mx-auto">
+                    Transformando la gestión de datos estudiantiles con innovación, eficiencia y simplicidad.
+                </p>
                 <p class="text-sm text-gray-300">&copy; 2024 SERENA. Todos los derechos reservados.</p>
-                <p style="margin-bottom: 0;">
-                    Diseñado por: 
-                    <a href="https://www.linkedin.com/in/aisoranar/" target="_blank" style="color: #f8f9fa; text-decoration: none; font-weight: bold; 
-                              transition: color 0.3s ease, text-shadow 0.3s ease; 
-                              text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);">
-                        Juan Gomez & Aisor Anaya
-                </a>
-            </p>
+                <p class="mt-4 text-sm text-gray-300">
+                    Diseño por: 
+                    <a href="https://www.linkedin.com/in/aisoranar/" target="_blank" class="text-gray-100 font-semibold hover:text-white transition-colors duration-300" style="text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);">
+                        Aisor Anaya
+                    </a>
+                    &amp;
+                    <a href="https://www.linkedin.com/in/juan-gomezduar/" target="_blank" class="text-gray-100 font-semibold hover:text-white transition-colors duration-300" style="text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);">
+                        Juan Gómez
+                    </a>
+                </p>
             </div>
 
             <!-- Social Media Links -->
             <div class="flex justify-center space-x-8 mb-8">
-                <a href="https://web.facebook.com/profile.php?id=100010477652901" class="text-gray-300 hover:text-white transition-transform duration-300 transform hover:scale-125 text-3xl" target="_blank">
+                <a href="https://web.facebook.com/profile.php?id=100010477652901" class="text-gray-300 hover:text-white transition-transform duration-300 transform hover:scale-125 text-4xl" target="_blank">
                     <i class="fab fa-facebook-f"></i>
                 </a>
-                              
-                <a href="https://www.instagram.com/permanenciaestudiantilunipaz" class="text-gray-300 hover:text-white transition-transform duration-300 transform hover:scale-125 text-3xl"target="_blank">
+                <a href="https://www.instagram.com/permanenciaestudiantilunipaz" class="text-gray-300 hover:text-white transition-transform duration-300 transform hover:scale-125 text-4xl" target="_blank">
                     <i class="fab fa-instagram"></i>
                 </a>
             </div>

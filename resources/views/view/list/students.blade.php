@@ -15,7 +15,7 @@
                     <th class="px-2 py-2 text-xs sm:text-sm">ID</th>
                     <th class="px-2 py-2 text-xs sm:text-sm">Nombres</th>
                     <th class="px-2 py-2 text-xs sm:text-sm">Discapacidad</th>
-                    <th class="px-2 py-2 text-xs sm:text-sm">Observación</th>
+                    <th class="px-2 py-2 text-xs sm:text-sm">Observación de entrada</th>
                     <th class="px-2 py-2 text-xs sm:text-sm">Acciones</th>
                 </tr>
             </thead>
@@ -63,11 +63,14 @@
     </div>
 
     {{-- Estructura para pantallas móviles: tarjetas --}}
-    <div class="md:hidden space-y-4">
-        @foreach ($students as $student)
-        <div class="bg-white p-4 border border-gray-200 rounded-lg shadow-md">
-            <div class="flex justify-between items-center mb-2">
-                <h2 class="font-bold text-xl">{{ $student->user->first_name }} {{ $student->user->first_lastname }}</h2>
+<div class="md:hidden space-y-4">
+    @foreach ($students as $student)
+    <div class="bg-white p-4 border border-gray-200 rounded-lg shadow-md">
+        <div class="flex justify-between items-center mb-2">
+            <h2 class="font-bold text-xl">{{ $student->user->first_name }} {{ $student->user->first_lastname }}</h2>
+            
+            <!-- Contenedor de los botones con espacio adecuado -->
+            <div class="flex space-x-2">
                 <button 
                     id="btnObservationMobile"
                     class="text-yellow-500 hover:text-yellow-700"
@@ -75,24 +78,31 @@
                 >
                     <i class="fas fa-edit"></i>
                 </button>
+
+                <!-- Botón para ver la auditoría con un ícono de ojo -->
+                <a href="{{ route('students.audit.show', $student->id) }}" class="text-blue-500 hover:text-blue-700">
+                    <i class="fas fa-eye"></i>
+                </a>
             </div>
-            <p><strong>ID:</strong> {{ $student->id }}</p>
-            <p><strong>Discapacidad:</strong> 
-                @if (auth()->user()->role === 'superadmin')
-                    <input 
-                        type="text" 
-                        value="{{ $student->disability }}" 
-                        id="disability-{{ $student->id }}" 
-                        class="border-gray-300 rounded-md text-center p-1"
-                    >
-                @else
-                    {{ $student->disability }}
-                @endif
-            </p>
-            <p><strong>Observación:</strong> {{ $student->observation }}</p>
         </div>
-        @endforeach
+        <p><strong>ID:</strong> {{ $student->id }}</p>
+        <p><strong>Discapacidad:</strong> 
+            @if (auth()->user()->role === 'superadmin')
+                <input 
+                    type="text" 
+                    value="{{ $student->disability }}" 
+                    id="disability-{{ $student->id }}" 
+                    class="border-gray-300 rounded-md text-center p-1"
+                >
+            @else
+                {{ $student->disability }}
+            @endif
+        </p>
+        <p><strong>Observación de entrada:</strong> {{ $student->observation }}</p>
     </div>
+    @endforeach
+</div>
+
 
     {{-- Modal --}}
     <div 

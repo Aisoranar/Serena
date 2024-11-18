@@ -27,9 +27,9 @@ class ProfileDocentController extends Controller
 
         $departments = DepartmentAndCity::select('id', 'department', 'city')->get()->groupBy('department');
         
-        $data =[
-            'docente'=> $docente,
-            'departments'=> $departments
+        $data = [
+            'docente' => $docente,
+            'departments' => $departments
         ];
 
         // Retorna la vista con los datos del docente
@@ -50,12 +50,17 @@ class ProfileDocentController extends Controller
             'department_id' => 'required|exists:departments_and_cities,id',
             'city_id' => 'required|exists:departments_and_cities,id',
             'school' => 'required|in:Escuela de Ciencias,Escuela de Ciencias Sociales y de las Comunicaciones,Escuela Ingeniería Agroindustrial,Escuela Ingeniería Agronómica,Escuela Ingeniería Ambiental y de Saneamiento,Escuela Ingeniería de Producción,Escuela de Medicina Veterinaria y Zootecnia',
-            'department' => 'required|string',
             'position' => 'required|string',
         ]);
 
         // Creamos el perfil del docente usando la información validada y el usuario asociado
-        ProfileDocent::createFromUser($user, $data);
+        ProfileDocent::create([
+            'user_id' => $user->id,  // Referencia al ID del usuario
+            'department_id' => $data['department_id'],
+            'city_id' => $data['city_id'],
+            'school' => $data['school'],
+            'position' => $data['position'],
+        ]);
 
         // Redirigimos a la vista del perfil del docente con un mensaje de éxito
         return redirect()->route('docente.perfil.show', ['id' => $user->id])
@@ -71,7 +76,7 @@ class ProfileDocentController extends Controller
         $docente = ProfileDocent::findOrFail($id);
 
         // Verifica que la vista esté correctamente referenciada
-        return view('view.docente.profile.edit', compact(var_name: 'docente'));
+        return view('view.docente.profile.edit', compact('docente'));
     }
 
     /**
@@ -102,13 +107,15 @@ class ProfileDocentController extends Controller
             ->with('success', 'Perfil del docente actualizado con éxito.');
     }
     
-
+    /**
+     * Actualizar los datos del docente (incluyendo la información de usuario).
+     */
     public function updateDocente(Request $request, $user_id)
     {
-        // Buscar el docente por su ID de usuario
+        // Buscar al usuario con el ID
         $user = User::findOrFail($user_id);
     
-        // Validamos los datos recibidos
+        // Validación de datos
         $data = $request->validate([
             'first_name' => 'required|string',
             'second_name' => 'nullable|string',
@@ -121,12 +128,12 @@ class ProfileDocentController extends Controller
         // Actualizar los datos del usuario
         $user->update([
             'first_name' => $data['first_name'],
-            'second_name' => $data['second_name'],  // Actualizar segundo nombre
+            'second_name' => $data['second_name'],  // Aquí se actualiza el segundo nombre
             'first_lastname' => $data['first_lastname'],
-            'second_lastname' => $data['second_lastname'],  // Actualizar segundo apellido
+            'second_lastname' => $data['second_lastname'],  // Aquí se actualiza el segundo apellido
         ]);
     
-        // Actualizamos el perfil del docente (suponiendo que esto es necesario)
+        // Actualizar el perfil del docente (si es necesario)
         $docente = ProfileDocent::where('user_id', $user_id)->first();
         if ($docente) {
             $docente->update([
@@ -135,9 +142,8 @@ class ProfileDocentController extends Controller
             ]);
         }
     
-        // Redirigir con mensaje de éxito
+        // Redirigir al perfil con mensaje de éxito
         return redirect()->route('docente.perfil.show', ['id' => $user->id])
             ->with('success', 'Perfil del docente actualizado con éxito.');
     }
-    
 }
